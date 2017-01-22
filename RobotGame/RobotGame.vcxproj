@@ -163,6 +163,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Collectible.cpp" />
     <ClCompile Include="drawable.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="glslprogram.cpp" />
@@ -179,6 +180,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\Collectible.h" />
     <ClInclude Include="..\include\defines.h" />
     <ClInclude Include="..\include\drawable.h" />
     <ClInclude Include="..\include\GameScene.h" />

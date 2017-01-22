@@ -3,6 +3,7 @@
 
 #include "ModelReader.h"
 #include "Robot.h"
+#include "Collectible.h"
 
 using glm::mat4;
 
@@ -19,6 +20,8 @@ private:
 	ModelReader* _lightBulb;
 	ModelReader* _loadRobot;
 	Robot* _robot;
+	Collectible* _coin;
+
 	float _xRotation;
 	mat4 _model; //Model matrix
 

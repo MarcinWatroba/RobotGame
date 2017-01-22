@@ -37,7 +37,11 @@ void GameScene::initScene(QuatCamera camera)
 	//plane = new VBOPlane(100.0, 100.0, 100, 100);
 	////controlTower2
 	_building = new ModelReader("../models/ball.obj");
-	_building->VBOobject();
+	_coin = new Collectible;
+	_coin->setVertices(_building->GetVertices());
+	_coin->setNormals(_building->GetNormals());
+	_coin->VBOobject();
+
 	_lightBulb = new ModelReader("../models/ball.obj");
 	_lightBulb->VBOobject();
 	_loadRobot = new ModelReader("../models/square.obj");
@@ -144,7 +148,7 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 	_prog.setUniform("Kd", 0.9f, 0.5f, 0.3f);	//Diffuse reflectancy
 	_prog.setUniform("Ka", 0.09f, 0.05f, 0.03f);	//Ambient reflectancy
 	_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
-	_building->render();
+	_coin->render();
 
 	_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 16.0f, 0.0f));	//translate matrix
 	_r1 = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix

@@ -3,11 +3,11 @@
 
 
 #include "stdafx.h"
-
+#include "drawable.h"
 
 using namespace std;
 
-class ModelReader
+class ModelReader : public Drawable
 {
 	private:
 		
@@ -45,8 +45,6 @@ class ModelReader
 		vector<float> _vertexNormalTriplets; 
 		vector<float> _vertexTexturePairs;
 
-		unsigned int _vaoHandle;
-
 	public:
 		ModelReader(string filename);
 		~ModelReader(void);
@@ -57,8 +55,6 @@ class ModelReader
 		void ProcessVertexNormalLine(istringstream& iss);
 		void ProcessVertexTextureLine(istringstream& iss);
 		void ProcessFaceLine(istringstream& iss);
-		void VBOobject();
-		void render() const;
 
 		void CreateExpandedVertices();
 		void CreateExpandedNormals();

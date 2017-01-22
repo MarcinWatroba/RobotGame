@@ -1,8 +1,9 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
+#include "drawable.h"
 
-class Robot
+class Robot : public Drawable
 {
 private:
 
@@ -25,10 +26,10 @@ private:
 
 	bool _walking;
 
-	vector<float> _vertices;	
-	vector<float> _normals;
+	//vector<float> _vertices;	
+	//vector<float> _normals;
 
-	unsigned int _vaoHandle;
+	//unsigned int _vaoHandle;
 
 	glm::vec3 _xaxis;
 	glm::vec3 _yaxis;
@@ -88,10 +89,10 @@ public:
 	void updateView(unsigned int part);  //Update the camera
 	glm::mat4 view(unsigned int i);
 
-	void setVertices(vector<float>& vertices);
-	void setNormals(vector<float>& normals);
-	void VBOobject();
-	void render() const;
+	//void setVertices(vector<float>& vertices);
+	//void setNormals(vector<float>& normals);
+	//void VBOobject();
+	//void render() const;
 	//vector<float>& setTextureCoordinates();
 };
 
