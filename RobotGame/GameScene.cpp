@@ -19,6 +19,8 @@ GameScene::GameScene()
 /////////////////////////////////////////////////////////////////////////////////////////////
 void GameScene::initScene(QuatCamera camera)
 {
+
+
 	//|Compile and link the shader  
 	compileAndLinkShader();
 
@@ -36,6 +38,8 @@ void GameScene::initScene(QuatCamera camera)
 	////Create the plane to represent the ground
 	//plane = new VBOPlane(100.0, 100.0, 100, 100);
 	////controlTower2
+
+	Bitmap bmp1 = Bitmap::bitmapFromFile("../textures/cleanmetal.png");
 	_loadModel = new ModelReader("../models/ball.obj");
 	_coins.push_back(new Collectible(20.0f, 0.0f, 0.0f));
 	_coins.push_back(new Collectible(-20.0f, 0.0f, 0.0f));
@@ -43,6 +47,8 @@ void GameScene::initScene(QuatCamera camera)
 	{
 		(*it)->setVertices(_loadModel->GetVertices());
 		(*it)->setNormals(_loadModel->GetNormals());
+		(*it)->setTextures(_loadModel->GetTextureCoordinates());
+		(*it)->applyTexture(bmp1);
 		(*it)->VBOobject();
 	}
 
@@ -50,9 +56,12 @@ void GameScene::initScene(QuatCamera camera)
 	_lightBulb->VBOobject();
 	_loadModel = new ModelReader("../models/square.obj");
 
+	Bitmap bmp2 = Bitmap::bitmapFromFile("../textures/grass.bmp");
 	_robot = new Robot();
 	_robot->setVertices(_loadModel->GetVertices());
 	_robot->setNormals(_loadModel->GetNormals());
+	_robot->setTextures(_loadModel->GetTextureCoordinates());
+	_robot->applyTexture(bmp2);
 	_robot->VBOobject();
 
 	delete _loadModel;
@@ -128,6 +137,7 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 	_prog.setUniform("Kd", 0.7f, 1.0f, 0.7f);	//Diffuse reflectancy
 	_prog.setUniform("Ka", 0.07f, 0.1f, 0.07f);	//Ambient reflectancy
 	_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
+	//_prog.setUniform("cubemap", _coins.back()->getTexture());
 	//plane->render();
 
 
@@ -145,6 +155,7 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 	_prog.setUniform("Kd", 0.9f, 0.5f, 0.3f);	//Diffuse reflectancy
 	_prog.setUniform("Ka", 0.09f, 0.05f, 0.03f);	//Ambient reflectancy
 	_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
+	//_prog.setUniform("cubemap", _coins.back()->getTexture());
 	//teapot->render();
 	for (auto it = _coins.begin(); it != _coins.end(); it++)
 	{
@@ -176,6 +187,7 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 	_prog.setUniform("Kd", .0f, .0f, .0f);	//Diffuse reflectancy
 	_prog.setUniform("Ka", 1.0f, 1.0f, 1.0f);	//Ambient reflectancy
 	_prog.setUniform("Ks", .0f, .0f, .0f);	//Specular reflectancy
+	//_prog.setUniform("cubemap", _coins.back()->getTexture());
 	_lightBulb->render();
 
 	//rotate matrix
@@ -193,7 +205,8 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 		_model = _t1 * _r1 * _s1;
 
 		setMatrices(camera);
-		//Set the Teapot material properties in the shader and render
+
+		//Set the collectible material properties in the shader and render
 		_prog.setUniform("Kd", _robot->getDiffuse().x, _robot->getDiffuse().y, _robot->getDiffuse().z);	//Diffuse reflectancy
 		_prog.setUniform("Ka", _robot->getAmbient().x, _robot->getAmbient().y, _robot->getAmbient().z);	//Ambient reflectancy
 		_prog.setUniform("Ks", _robot->getSpecular().x, _robot->getSpecular().y, _robot->getSpecular().z);	//Specular reflectancy
@@ -244,8 +257,8 @@ void GameScene::compileAndLinkShader()
 {
 
 	try {
-		_prog.compileShader("../shaders/diffuse.vert");
-		_prog.compileShader("../shaders/diffuse.frag");
+		_prog.compileShader("../shaders/vertexShader.vert");
+		_prog.compileShader("../shaders/fragmentShader.frag");
 		_prog.link();
 		_prog.validate();
 		_prog.use();

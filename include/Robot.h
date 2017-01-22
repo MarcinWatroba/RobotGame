@@ -10,9 +10,7 @@ private:
 	int _width, _height;
 
 	float _time;
-	glm::mat4 _t1;
-	glm::mat4 _t2;
-	glm::mat4 _r2;
+
 	glm::mat4 _s1;
 	mat4 _model;
 	mat4 _model2;

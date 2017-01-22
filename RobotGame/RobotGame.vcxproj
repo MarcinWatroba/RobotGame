@@ -163,6 +163,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="Collectible.cpp" />
     <ClCompile Include="drawable.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -178,8 +179,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\Bitmap.h" />
     <ClInclude Include="..\include\Collectible.h" />
     <ClInclude Include="..\include\defines.h" />
     <ClInclude Include="..\include\drawable.h" />
@@ -190,12 +193,14 @@
     <ClInclude Include="..\include\QuatCamera.h" />
     <ClInclude Include="..\include\Robot.h" />
     <ClInclude Include="..\include\scene.h" />
+    <ClInclude Include="..\include\stb_image.h" />
     <ClInclude Include="..\include\stdafx.h" />
     <ClInclude Include="..\include\targetver.h" />
+    <ClInclude Include="..\include\Texture.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Shaders\diffuse.frag" />
-    <None Include="..\Shaders\diffuse.vert" />
+    <None Include="..\Shaders\fragmentShader.frag" />
+    <None Include="..\Shaders\vertexShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

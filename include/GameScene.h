@@ -4,8 +4,7 @@
 #include "ModelReader.h"
 #include "Robot.h"
 #include "Collectible.h"
-
-using glm::mat4;
+#include "Texture.h"
 
 class GameScene : public Scene
 {

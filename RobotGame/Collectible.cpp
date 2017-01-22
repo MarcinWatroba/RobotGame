@@ -7,6 +7,10 @@ Collectible::Collectible(float x, float y, float z)
 	_location.y = y;
 	_location.z = z;
 	std::cout << x << " " << y << " " << z << std::endl;
+
+
+
+
 }
 
 void Collectible::collected(glm::vec3 robLoc)
@@ -26,3 +30,4 @@ glm::vec3 Collectible::getLocation()
 {
 	return _location;
 }
+
