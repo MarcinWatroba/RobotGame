@@ -5,11 +5,13 @@
 
 #pragma once
 
+#define _USE_MATH_DEFINES
+#define GLM_FORCE_RADIANS
+
 #include "targetver.h"
 
 #include <stdio.h>
 #include <tchar.h>
-
 #include <string>
 #include <vector>
 #include <iostream>
@@ -28,6 +30,11 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glfw3.h>
 #include "glslprogram.h"
+
+#include "defines.h"
+#include "scene.h"
+
+using namespace std;
 
 
 // TODO: reference additional headers your program requires here

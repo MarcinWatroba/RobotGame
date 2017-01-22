@@ -103,6 +103,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -163,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="drawable.cpp" />
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="gl_core_4_3.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="QuatCamera.cpp" />
@@ -176,11 +178,16 @@
   <ItemGroup>
     <ClInclude Include="..\include\defines.h" />
     <ClInclude Include="..\include\drawable.h" />
+    <ClInclude Include="..\include\GameScene.h" />
     <ClInclude Include="..\include\gl_core_4_3.hpp" />
     <ClInclude Include="..\include\QuatCamera.h" />
     <ClInclude Include="..\include\scene.h" />
     <ClInclude Include="..\include\stdafx.h" />
     <ClInclude Include="..\include\targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Shaders\diffuse.frag" />
+    <None Include="..\Shaders\diffuse.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

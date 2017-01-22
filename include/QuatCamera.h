@@ -1,9 +1,33 @@
-#pragma once
-
-
+#ifndef QUATCAMERA_H
+#define QUATCAMERA_H
 
 class QuatCamera 
 {
+
+private:
+
+	float _fieldOfView;
+	float _nearPlane;
+	float _farPlane;
+	float _aspectRatio;
+
+	//The camera coordinate axes
+	glm::vec3 _xaxis;
+	glm::vec3 _yaxis;
+	glm::vec3 _zaxis;
+
+	//Camera position vector and Quaternoin to represent camera orientation
+	glm::vec3 _position;
+	glm::quat _orientation;
+
+	glm::quat xRotation;
+	glm::quat yRotation;
+	glm::quat zRotation;
+
+	glm::mat4 _view;
+	glm::mat4 _projection;
+
+
 public:
 
 	QuatCamera();  //Constructor
@@ -37,32 +61,9 @@ public:
 	glm::mat4 view(); //Get the View matrix
 
 	glm::mat4 projection(); //Get the Projection matrix
-	
 
-private:
+};	
 
-	float _fieldOfView;
-	float _nearPlane;
-	float _farPlane;
-	float _aspectRatio; 
-
-	//The camera coordinate axes
-	glm::vec3 _xaxis;
-	glm::vec3 _yaxis;
-	glm::vec3 _zaxis;
-
-	//Camera position vector and Quaternoin to represent camera orientation
-	glm::vec3 _position;
-	glm::quat _orientation;
-
-	glm::quat xRotation;
-	glm::quat yRotation;
-	glm::quat zRotation;
-
-	glm::mat4 _view;
-	glm::mat4 _projection;
-
-
-};
+#endif //QUATCAMERA_H
 
 

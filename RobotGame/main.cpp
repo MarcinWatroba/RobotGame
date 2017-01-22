@@ -4,6 +4,7 @@
 #include "stdafx.h"
 
 #include "scene.h"
+#include "GameScene.h"
 #include "QuatCamera.h"
 
 #define WIN_WIDTH 800
