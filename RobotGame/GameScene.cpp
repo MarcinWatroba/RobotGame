@@ -42,10 +42,10 @@ void GameScene::initScene(QuatCamera camera)
 	_lightBulb->VBOobject();
 	_loadRobot = new ModelReader("../models/square.obj");
 
-	//_robot = new Robot();
-	//_robot->setVertices(m_loadRobot->GetVertices());
-	//_robot->setNormals(m_loadRobot->GetNormals());
-	//_robot->VBOobject();
+	_robot = new Robot();
+	_robot->setVertices(_loadRobot->GetVertices());
+	_robot->setNormals(_loadRobot->GetNormals());
+	_robot->VBOobject();
 
 
 	glm::mat4 _lid = glm::mat4(1.0);
@@ -59,22 +59,22 @@ void GameScene::initScene(QuatCamera camera)
 /////////////////////////////////////////////////////////////////////////////////////////////
 void GameScene::update(GLFWwindow * window, float t)
 {
-	//if (glfwGetKey(window, GLFW_KEY_D))
-	//{
-	//	_robot->rotate(0, -t * 5.f, 0.0f);
+	if (glfwGetKey(window, GLFW_KEY_D))
+	{
+		_robot->rotate(0, -t * 5.f, 0.0f);
 
-	//}
-	//if (glfwGetKey(window, GLFW_KEY_A))
-	//{
-	//	_robot->rotate(0, t*5.f, 0.0f);
+	}
+	if (glfwGetKey(window, GLFW_KEY_A))
+	{
+		_robot->rotate(0, t*5.f, 0.0f);
 
-	//}
-	//if (glfwGetKey(window, GLFW_KEY_W))
-	//{
+	}
+	if (glfwGetKey(window, GLFW_KEY_W))
+	{
 
-	//	_robot->forward(0, -t * 5.0f);
+		_robot->forward(0, -t * 5.0f);
 
-	//}
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -164,21 +164,21 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 	for (int i = 0; i < 6; i++)
 	{
 
-		//_robot->scalePart(i, robotPosition, xRotation);
-		//_robot->setMaterial(i);
+		_robot->scalePart(i, _robotPosition, _xRotation);
+		_robot->setMaterial(i);
 
-		//s1 = _robot->getScale();
-		//r1 = _robot->view(i);
-		//t1 = _robot->getTranslationM();
+		_s1 = _robot->getScale();
+		_r1 = _robot->view(i);
+		_t1 = _robot->getTranslationM();
 
-		//model = t1 * r1 * s1;
+		_model = _t1 * _r1 * _s1;
 
-		//setMatrices(camera);
-		////////Set the Teapot material properties in the shader and render
-		//prog.setUniform("Kd", _robot->getDiffuse().x, _robot->getDiffuse().y, _robot->getDiffuse().z);	//Diffuse reflectancy
-		//prog.setUniform("Ka", _robot->getAmbient().x, _robot->getAmbient().y, _robot->getAmbient().z);	//Ambient reflectancy
-		//prog.setUniform("Ks", _robot->getSpecular().x, _robot->getSpecular().y, _robot->getSpecular().z);	//Specular reflectancy
-		//_robot->render();
+		setMatrices(camera);
+		//Set the Teapot material properties in the shader and render
+		_prog.setUniform("Kd", _robot->getDiffuse().x, _robot->getDiffuse().y, _robot->getDiffuse().z);	//Diffuse reflectancy
+		_prog.setUniform("Ka", _robot->getAmbient().x, _robot->getAmbient().y, _robot->getAmbient().z);	//Ambient reflectancy
+		_prog.setUniform("Ks", _robot->getSpecular().x, _robot->getSpecular().y, _robot->getSpecular().z);	//Specular reflectancy
+		_robot->render();
 	}
 
 }

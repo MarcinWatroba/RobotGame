@@ -2,6 +2,7 @@
 #define GAMESCENE_H
 
 #include "ModelReader.h"
+#include "Robot.h"
 
 using glm::mat4;
 
@@ -17,7 +18,7 @@ private:
 	ModelReader* _building;
 	ModelReader* _lightBulb;
 	ModelReader* _loadRobot;
-	//Robot* _robot;
+	Robot* _robot;
 	float _xRotation;
 	mat4 _model; //Model matrix
 
