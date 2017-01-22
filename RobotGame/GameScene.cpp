@@ -27,11 +27,11 @@ void GameScene::initScene(QuatCamera camera)
 	//Set up the lighting
 	setLightParams(camera);
 
-	robotOrientation = glm::quat(1.0, 0.0, 0.0, 0.0);
-	robotPosition = glm::vec3(0.0f, 4.0f, 0.0f);
-	robotPosition2 = glm::vec3(0.0f, 3.0f, 0.0f);
-	robotMove = 0;
-	xRotation = -1.570796326f;
+	_robotOrientation = glm::quat(1.0, 0.0, 0.0, 0.0);
+	_robotPosition = glm::vec3(0.0f, 4.0f, 0.0f);
+	_robotPosition2 = glm::vec3(0.0f, 3.0f, 0.0f);
+	_robotMove = 0;
+	_xRotation = -1.570796326f;
 
 	////Create the plane to represent the ground
 	//plane = new VBOPlane(100.0, 100.0, 100, 100);
@@ -48,7 +48,7 @@ void GameScene::initScene(QuatCamera camera)
 	//_robot->VBOobject();
 
 
-	glm::mat4 lid = glm::mat4(1.0);
+	glm::mat4 _lid = glm::mat4(1.0);
 
 	//teapot = new VBOTeapot(16, lid);
 
@@ -83,12 +83,12 @@ void GameScene::update(GLFWwindow * window, float t)
 void GameScene::setLightParams(QuatCamera camera)
 {
 
-	worldLight = vec3(10.0f, 16.0f, 0.0f);
+	_worldLight = vec3(10.0f, 16.0f, 0.0f);
 
-	prog.setUniform("La", 1.0f, 1.0f, 1.0f);	//ambient light intensity
-	prog.setUniform("Lp", 1.0f, 1.0f, 1.0f);	//point light intensity
+	_prog.setUniform("La", 1.0f, 1.0f, 1.0f);	//ambient light intensity
+	_prog.setUniform("Lp", 1.0f, 1.0f, 1.0f);	//point light intensity
 
-	prog.setUniform("LightPosition", worldLight);
+	_prog.setUniform("LightPosition", _worldLight);
 
 	//  prog.setUniform("LightPosition", camera.view() * vec4(worldLight,1.0) );
 
@@ -103,64 +103,64 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 
 	//First deal with the plane to represent the ground
 
-	t1 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));	//translate matrix
-	r1 = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));	//rotate matrix
-	s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));	//scale matrix
-	model = t1*r1*s1;
+	_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));	//translate matrix
+	_r1 = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));	//rotate matrix
+	_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));	//scale matrix
+	_model = _t1*_r1*_s1;
 	//Set the matrices for the plane although it is only the model matrix that changes so could be made more efficient	
 	setMatrices(camera);
 
 	//Set the plane's material properties in the shader and render
-	prog.setUniform("Kd", 0.7f, 1.0f, 0.7f);	//Diffuse reflectancy
-	prog.setUniform("Ka", 0.07f, 0.1f, 0.07f);	//Ambient reflectancy
-	prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
+	_prog.setUniform("Kd", 0.7f, 1.0f, 0.7f);	//Diffuse reflectancy
+	_prog.setUniform("Ka", 0.07f, 0.1f, 0.07f);	//Ambient reflectancy
+	_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
 	//plane->render();
 
 
 	//Now set up the teapot 
 
 
-	t1 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 10.0f, 0.0f));	//translate matrix
-	r1 = glm::rotate(glm::mat4(1.0f), 0.f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix
-	s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));	//scale matrix
-	model = t1*r1*s1;
+	_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 10.0f, 0.0f));	//translate matrix
+	_r1 = glm::rotate(glm::mat4(1.0f), 0.f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix
+	_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));	//scale matrix
+	_model = _t1*_r1*_s1;
 
 	setMatrices(camera);
 
 	//Set the Teapot material properties in the shader and render
-	prog.setUniform("Kd", 0.9f, 0.5f, 0.3f);	//Diffuse reflectancy
-	prog.setUniform("Ka", 0.09f, 0.05f, 0.03f);	//Ambient reflectancy
-	prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
+	_prog.setUniform("Kd", 0.9f, 0.5f, 0.3f);	//Diffuse reflectancy
+	_prog.setUniform("Ka", 0.09f, 0.05f, 0.03f);	//Ambient reflectancy
+	_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
 	//teapot->render();
 
-	t1 = glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 0.0f, 0.0f));	//translate matrix
-	r1 = glm::rotate(glm::mat4(1.0f), 0.f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix
-	s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));	//scale matrix
-	model = t1*r1*s1;
+	_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 0.0f, 0.0f));	//translate matrix
+	_r1 = glm::rotate(glm::mat4(1.0f), 0.f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix
+	_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));	//scale matrix
+	_model = _t1*_r1*_s1;
 
 	setMatrices(camera);
 
 	////////Set the Teapot material properties in the shader and render
-	prog.setUniform("Kd", 0.9f, 0.5f, 0.3f);	//Diffuse reflectancy
-	prog.setUniform("Ka", 0.09f, 0.05f, 0.03f);	//Ambient reflectancy
-	prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
+	_prog.setUniform("Kd", 0.9f, 0.5f, 0.3f);	//Diffuse reflectancy
+	_prog.setUniform("Ka", 0.09f, 0.05f, 0.03f);	//Ambient reflectancy
+	_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
 	//m_building->render();
 
-	t1 = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 16.0f, 0.0f));	//translate matrix
-	r1 = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix
-	s1 = glm::scale(glm::mat4(1.0f), glm::vec3(0.25f, .25f, .25f));	//scale matrix
-	model = t1*r1*s1;
+	_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 16.0f, 0.0f));	//translate matrix
+	_r1 = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix
+	_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(0.25f, .25f, .25f));	//scale matrix
+	_model = _t1*_r1*_s1;
 
 	setMatrices(camera);
 
 	//////Set the Teapot material properties in the shader and render
-	prog.setUniform("Kd", .0f, .0f, .0f);	//Diffuse reflectancy
-	prog.setUniform("Ka", 1.0f, 1.0f, 1.0f);	//Ambient reflectancy
-	prog.setUniform("Ks", .0f, .0f, .0f);	//Specular reflectancy
+	_prog.setUniform("Kd", .0f, .0f, .0f);	//Diffuse reflectancy
+	_prog.setUniform("Ka", 1.0f, 1.0f, 1.0f);	//Ambient reflectancy
+	_prog.setUniform("Ks", .0f, .0f, .0f);	//Specular reflectancy
 	//m_lightBulb->render();
 
 	//rotate matrix
-	r1 = glm::rotate(glm::mat4(1.0f), -xRotation, glm::vec3(0.0f, 1.0f, 0.0f));
+	_r1 = glm::rotate(glm::mat4(1.0f), -_xRotation, glm::vec3(0.0f, 1.0f, 0.0f));
 	for (int i = 0; i < 6; i++)
 	{
 
@@ -191,19 +191,19 @@ void GameScene::setMatrices(QuatCamera camera)
 {
 	//model = t1*r1*s1;
 
-	mat4 mv = camera.view() * model;
+	mat4 _mv = camera.view() * _model;
 
-	prog.setUniform("ModelViewMatrix", mv);
-	prog.setUniform("NormalMatrix",
-		mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2])));
-	prog.setUniform("MVP", camera.projection() * mv);
+	_prog.setUniform("ModelViewMatrix", _mv);
+	_prog.setUniform("NormalMatrix",
+		mat3(vec3(_mv[0]), vec3(_mv[1]), vec3(_mv[2])));
+	_prog.setUniform("MVP", camera.projection() * _mv);
 	// the correct matrix to transform the normal is the transpose of the inverse of the M matrix
-	mat3 normMat = glm::transpose(glm::inverse(mat3(model)));
+	mat3 _normMat = glm::transpose(glm::inverse(mat3(_model)));
 
-	prog.setUniform("M", model);
+	_prog.setUniform("M", _model);
 	//prog.setUniform("NormalMatrix", normMat);
-	prog.setUniform("V", camera.view());
-	prog.setUniform("P", camera.projection());
+	_prog.setUniform("V", camera.view());
+	_prog.setUniform("P", camera.projection());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -212,8 +212,8 @@ void GameScene::setMatrices(QuatCamera camera)
 void GameScene::resize(QuatCamera camera, int w, int h)
 {
 	gl::Viewport(0, 0, w, h);
-	width = w;
-	height = h;
+	_width = w;
+	_height = h;
 	camera.setAspectRatio((float)w / h);
 
 }
@@ -225,11 +225,11 @@ void GameScene::compileAndLinkShader()
 {
 
 	try {
-		prog.compileShader("Shaders/diffuse.vert");
-		prog.compileShader("Shaders/diffuse.frag");
-		prog.link();
-		prog.validate();
-		prog.use();
+		_prog.compileShader("Shaders/diffuse.vert");
+		_prog.compileShader("Shaders/diffuse.frag");
+		_prog.link();
+		_prog.validate();
+		_prog.use();
 	}
 	catch (GLSLProgramException & e) {
 		cerr << e.what() << endl;

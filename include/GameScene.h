@@ -6,30 +6,30 @@ using glm::mat4;
 class GameScene : public Scene
 {
 private:
-	GLSLProgram prog;
+	GLSLProgram _prog;
 
-	int width, height;
+	int _width, _height;
 
-	vec3 worldLight;
+	vec3 _worldLight;
 
 	//ModelReader* _building;
 	//ModelReader* _lightBulb;
 	//ModelReader* _loadRobot;
 	//Robot* _robot;
-	float xRotation;
-	mat4 model; //Model matrix
+	float _xRotation;
+	mat4 _model; //Model matrix
 
-	glm::mat4 t1;
-	glm::mat4 r1;
-	glm::mat4 s1;
+	glm::mat4 _t1;
+	glm::mat4 _r1;
+	glm::mat4 _s1;
 	glm::vec3 _xaxis;
-	float xa;
-	float za;
+	float _xa;
+	float _za;
 
-	float robotMove;
-	glm::vec3 robotPosition;
-	glm::vec3 robotPosition2;
-	glm::quat robotOrientation;
+	float _robotMove;
+	glm::vec3 _robotPosition;
+	glm::vec3 _robotPosition2;
+	glm::quat _robotOrientation;
 
 	void setMatrices(QuatCamera camera); //Set the camera matrices
 
