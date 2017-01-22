@@ -3,14 +3,13 @@
 in vec3 vertPos;
 in vec3 N;
 in vec3 lightPos;
-in vec2 texCoord;
+//in vec2 texCoord;
 
-//out vec4 FragColour;
 
 uniform vec3 La;			// Ambient light intensity
 uniform vec3 Lp;			// Point light intensity
 
-uniform sampler2D tex;
+//uniform sampler2D tex;
 
 uniform vec3 Ka;			// Ambient light reflectivity
 uniform vec3 Kd;            // Diffuse reflectivity
@@ -41,6 +40,9 @@ void main() {
    Is = clamp(Is, 0.0, 1.0);
 
    //Combining all lighting elements together
-   FragColour = (Ia + vec4(Lp,1.0) * (Id +Is)) * texture(tex,texCoord);
+   FragColour = Ia + vec4(Lp,1.0) * (Id +Is);
+   
+   //Textures not used
+   //FragColour = (Ia + vec4(Lp,1.0) * (Id +Is)) * texture(tex,texCoord);
 
 }

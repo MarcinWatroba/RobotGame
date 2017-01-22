@@ -2,7 +2,7 @@
 #define COLLECTIBLE_H
 
 #include <drawable.h>
-#include "texture.h"
+
 
 class Collectible : public Drawable
 {

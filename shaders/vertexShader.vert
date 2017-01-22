@@ -2,9 +2,9 @@
 
 layout (location = 0) in vec3 VertexPosition;
 layout (location = 1) in vec3 VertexNormal;
-layout (location = 2) in vec2 fragTexCoord;
+//layout (location = 2) in vec2 fragTexCoord;
 
-out vec2 texCoord;
+//out vec2 texCoord;
 out vec3 vertPos; //Vertex position in eye coords
 out vec3 N; //Transformed normal
 out vec3 lightPos; //Light position in eye coords
@@ -24,7 +24,7 @@ void main()
      
    lightPos = vec3(V * vec4(LightPosition,1.0));  
 
-   texCoord = fragTexCoord;
+   //texCoord = fragTexCoord;
 
    N = normalize( NormalMatrix * VertexNormal);
       

@@ -39,29 +39,49 @@ void GameScene::initScene(QuatCamera camera)
 	//plane = new VBOPlane(100.0, 100.0, 100, 100);
 	////controlTower2
 
-	Bitmap bmp1 = Bitmap::bitmapFromFile("../textures/cleanmetal.png");
+	//Bitmap bmp1 = Bitmap::bitmapFromFile("../textures/cleanmetal.png");
 	_loadModel = new ModelReader("../models/ball.obj");
-	_coins.push_back(new Collectible(20.0f, 0.0f, 0.0f));
-	_coins.push_back(new Collectible(-20.0f, 0.0f, 0.0f));
+	_coins.push_back(new Collectible(20.0f, .3f, 0.0f));
+	_coins.push_back(new Collectible(-20.0f, .3f, 0.0f));
+	_coins.push_back(new Collectible(0.0f, 0.3f, -10.0f));
 	for (auto it = _coins.begin(); it != _coins.end(); it++)
 	{
 		(*it)->setVertices(_loadModel->GetVertices());
 		(*it)->setNormals(_loadModel->GetNormals());
-		(*it)->setTextures(_loadModel->GetTextureCoordinates());
-		(*it)->applyTexture(bmp1);
+		//(*it)->setTextures(_loadModel->GetTextureCoordinates());
+		//(*it)->applyTexture(bmp1);
 		(*it)->VBOobject();
 	}
 
-	_lightBulb = new ModelReader("../models/ball.obj");
-	_lightBulb->VBOobject();
-	_loadModel = new ModelReader("../models/square.obj");
+	_staticModels.push_back(new ModelReader("../models/square.obj"));
+	_staticModels.push_back(new ModelReader("../models/ground.obj"));
+	_staticModels.push_back(new ModelReader("../models/table.obj"));
+	_staticModels.push_back(new ModelReader("../models/sofa.obj"));
+	//_objects.push_back(new StaticObject());
+	for (int i = 0; i < 4; i++)
+	{
+		_objects.push_back(new StaticObject());
+		_objects.at(i)->setVertices(_staticModels.at(i)->GetVertices());
+		_objects.at(i)->setNormals(_staticModels.at(i)->GetNormals());
+		_objects.at(i)->VBOobject();
+	}
 
-	Bitmap bmp2 = Bitmap::bitmapFromFile("../textures/grass.bmp");
+
+
+	//_loadModel = new ModelReader("../models/ground.obj");
+	//_objects.push_back(new StaticObject());
+	//_objects.back()->setVertices(_loadModel->GetVertices());
+	//_objects.back()->setNormals(_loadModel->GetNormals());
+
+	_objects.back()->VBOobject();
+
+	_loadModel = new ModelReader("../models/square.obj");
+	//Bitmap bmp2 = Bitmap::bitmapFromFile("../textures/cleanmetal.png");
 	_robot = new Robot();
 	_robot->setVertices(_loadModel->GetVertices());
 	_robot->setNormals(_loadModel->GetNormals());
-	_robot->setTextures(_loadModel->GetTextureCoordinates());
-	_robot->applyTexture(bmp2);
+	//_robot->setTextures(_loadModel->GetTextureCoordinates());
+	//_robot->applyTexture(bmp2);
 	_robot->VBOobject();
 
 	delete _loadModel;
@@ -126,70 +146,38 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 
 	//First deal with the plane to represent the ground
 
-	_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));	//translate matrix
-	_r1 = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));	//rotate matrix
-	_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));	//scale matrix
-	_model = _t1*_r1*_s1;
-	//Set the matrices for the plane although it is only the model matrix that changes so could be made more efficient	
-	setMatrices(camera);
 
-	//Set the plane's material properties in the shader and render
-	_prog.setUniform("Kd", 0.7f, 1.0f, 0.7f);	//Diffuse reflectancy
-	_prog.setUniform("Ka", 0.07f, 0.1f, 0.07f);	//Ambient reflectancy
-	_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
-	//_prog.setUniform("cubemap", _coins.back()->getTexture());
-	//plane->render();
-
-
-	//Now set up the teapot 
-
-
-	_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 10.0f, 0.0f));	//translate matrix
-	_r1 = glm::rotate(glm::mat4(1.0f), 0.f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix
-	_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));	//scale matrix
-	_model = _t1*_r1*_s1;
-
-	setMatrices(camera);
-
-	//Set the Teapot material properties in the shader and render
-	_prog.setUniform("Kd", 0.9f, 0.5f, 0.3f);	//Diffuse reflectancy
-	_prog.setUniform("Ka", 0.09f, 0.05f, 0.03f);	//Ambient reflectancy
-	_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
-	//_prog.setUniform("cubemap", _coins.back()->getTexture());
-	//teapot->render();
 	for (auto it = _coins.begin(); it != _coins.end(); it++)
 	{
 
 		_t1 = glm::translate(glm::mat4(1.0f), (*it)->getLocation());	//translate matrix
 		_r1 = glm::rotate(glm::mat4(1.0f), 0.f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix
-		_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));	//scale matrix
+		_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(0.3f, 0.3f, 0.3f));	//scale matrix
 		_model = _t1*_r1*_s1;
 
 		setMatrices(camera);
 
 		////////Set the Teapot material properties in the shader and render
-		_prog.setUniform("Kd", 0.9f, 0.5f, 0.3f);	//Diffuse reflectancy
-		_prog.setUniform("Ka", 0.09f, 0.05f, 0.03f);	//Ambient reflectancy
+		_prog.setUniform("Kd", 1.0f, 1.0f, 0.0f);	//Diffuse reflectancy
+		_prog.setUniform("Ka", 0.1f, 0.1f, 0.0f);	//Ambient reflectancy
 		_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
 		(*it)->render();
 	}
 
 
-	_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 16.0f, 0.0f));	//translate matrix
-	_r1 = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix
-	_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(0.25f, .25f, .25f));	//scale matrix
-	//std::cout << _t1[3][0] << std::endl;
-	_model = _t1*_r1*_s1;
+	for (int i = 0; i < 4; i++)
+	{
+		_model = _objects.at(i)->transform(i);
+		_objects.at(i)->setMaterial(i);
+		setMatrices(camera);
 
-	setMatrices(camera);
+		//////Set the Teapot material properties in the shader and render
+		_prog.setUniform("Kd", _objects.at(i)->getDiffuse().x, _objects.at(i)->getDiffuse().y, _objects.at(i)->getDiffuse().z);	//Diffuse reflectancy
+		_prog.setUniform("Ka", _objects.at(i)->getAmbient().x, _objects.at(i)->getAmbient().y, _objects.at(i)->getAmbient().z);	//Ambient reflectancy
+		_prog.setUniform("Ks", _objects.at(i)->getSpecular().x, _objects.at(i)->getSpecular().y, _objects.at(i)->getSpecular().z);	//Specular reflectancy
 
-	//////Set the Teapot material properties in the shader and render
-	_prog.setUniform("Kd", .0f, .0f, .0f);	//Diffuse reflectancy
-	_prog.setUniform("Ka", 1.0f, 1.0f, 1.0f);	//Ambient reflectancy
-	_prog.setUniform("Ks", .0f, .0f, .0f);	//Specular reflectancy
-	//_prog.setUniform("cubemap", _coins.back()->getTexture());
-	_lightBulb->render();
-
+		_objects.at(i)->render();
+	}
 	//rotate matrix
 	_r1 = glm::rotate(glm::mat4(1.0f), -_xRotation, glm::vec3(0.0f, 1.0f, 0.0f));
 	for (int i = 0; i < 6; i++)

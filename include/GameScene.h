@@ -4,6 +4,7 @@
 #include "ModelReader.h"
 #include "Robot.h"
 #include "Collectible.h"
+#include "StaticObject.h"
 #include "Texture.h"
 
 class GameScene : public Scene
@@ -15,10 +16,12 @@ private:
 
 	vec3 _worldLight;
 
-	ModelReader* _lightBulb;
 	ModelReader* _loadModel;
+	vector<ModelReader*> _staticModels;
 	Robot* _robot;
 	vector<Collectible*> _coins;
+	vector<StaticObject*> _objects;
+
 
 	float _xRotation;
 	mat4 _model; //Model matrix
