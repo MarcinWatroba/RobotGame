@@ -22,3 +22,7 @@ void Collectible::collected(glm::vec3 robLoc)
 
 }
 
+glm::vec3 Collectible::getLocation()
+{
+	return _location;
+}

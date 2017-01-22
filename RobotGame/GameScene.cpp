@@ -37,10 +37,14 @@ void GameScene::initScene(QuatCamera camera)
 	//plane = new VBOPlane(100.0, 100.0, 100, 100);
 	////controlTower2
 	_loadModel = new ModelReader("../models/ball.obj");
-	_coin = new Collectible(20.0f, 0.0f, 0.0f);
-	_coin->setVertices(_loadModel->GetVertices());
-	_coin->setNormals(_loadModel->GetNormals());
-	_coin->VBOobject();
+	_coins.push_back(new Collectible(20.0f, 0.0f, 0.0f));
+	_coins.push_back(new Collectible(-20.0f, 0.0f, 0.0f));
+	for (auto it = _coins.begin(); it != _coins.end(); it++)
+	{
+		(*it)->setVertices(_loadModel->GetVertices());
+		(*it)->setNormals(_loadModel->GetNormals());
+		(*it)->VBOobject();
+	}
 
 	_lightBulb = new ModelReader("../models/ball.obj");
 	_lightBulb->VBOobject();
@@ -80,7 +84,11 @@ void GameScene::update(GLFWwindow * window, float t)
 		_robot->forward(0, -t * 5.0f);
 
 	}
-	_coin->collected(_robotLoc);
+	for (auto it = _coins.begin(); it != _coins.end(); it++)
+	{
+		(*it)->collected(_robotLoc);
+
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -138,19 +146,23 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 	_prog.setUniform("Ka", 0.09f, 0.05f, 0.03f);	//Ambient reflectancy
 	_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
 	//teapot->render();
+	for (auto it = _coins.begin(); it != _coins.end(); it++)
+	{
 
-	_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 0.0f, 0.0f));	//translate matrix
-	_r1 = glm::rotate(glm::mat4(1.0f), 0.f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix
-	_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));	//scale matrix
-	_model = _t1*_r1*_s1;
+		_t1 = glm::translate(glm::mat4(1.0f), (*it)->getLocation());	//translate matrix
+		_r1 = glm::rotate(glm::mat4(1.0f), 0.f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix
+		_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));	//scale matrix
+		_model = _t1*_r1*_s1;
 
-	setMatrices(camera);
+		setMatrices(camera);
 
-	////////Set the Teapot material properties in the shader and render
-	_prog.setUniform("Kd", 0.9f, 0.5f, 0.3f);	//Diffuse reflectancy
-	_prog.setUniform("Ka", 0.09f, 0.05f, 0.03f);	//Ambient reflectancy
-	_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
-	_coin->render();
+		////////Set the Teapot material properties in the shader and render
+		_prog.setUniform("Kd", 0.9f, 0.5f, 0.3f);	//Diffuse reflectancy
+		_prog.setUniform("Ka", 0.09f, 0.05f, 0.03f);	//Ambient reflectancy
+		_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
+		(*it)->render();
+	}
+
 
 	_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 16.0f, 0.0f));	//translate matrix
 	_r1 = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix

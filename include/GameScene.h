@@ -19,7 +19,7 @@ private:
 	ModelReader* _lightBulb;
 	ModelReader* _loadModel;
 	Robot* _robot;
-	Collectible* _coin;
+	vector<Collectible*> _coins;
 
 	float _xRotation;
 	mat4 _model; //Model matrix
