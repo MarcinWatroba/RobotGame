@@ -6,10 +6,11 @@
 class Collectible : public Drawable
 {
 private:
-
+	glm::vec3 _location;
+	glm::vec3 _distance;
 public:
-	Collectible();
-
+	Collectible(float x, float y, float z);
+	void collected(glm::vec3 robLoc);
 };
 
 #endif //COLLECTIBLE_H

@@ -16,14 +16,15 @@ private:
 
 	vec3 _worldLight;
 
-	ModelReader* _building;
 	ModelReader* _lightBulb;
-	ModelReader* _loadRobot;
+	ModelReader* _loadModel;
 	Robot* _robot;
 	Collectible* _coin;
 
 	float _xRotation;
 	mat4 _model; //Model matrix
+
+	vec3 _robotLoc;
 
 	glm::mat4 _t1;
 	glm::mat4 _r1;

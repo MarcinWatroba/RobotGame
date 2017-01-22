@@ -36,21 +36,22 @@ void GameScene::initScene(QuatCamera camera)
 	////Create the plane to represent the ground
 	//plane = new VBOPlane(100.0, 100.0, 100, 100);
 	////controlTower2
-	_building = new ModelReader("../models/ball.obj");
-	_coin = new Collectible;
-	_coin->setVertices(_building->GetVertices());
-	_coin->setNormals(_building->GetNormals());
+	_loadModel = new ModelReader("../models/ball.obj");
+	_coin = new Collectible(20.0f, 0.0f, 0.0f);
+	_coin->setVertices(_loadModel->GetVertices());
+	_coin->setNormals(_loadModel->GetNormals());
 	_coin->VBOobject();
 
 	_lightBulb = new ModelReader("../models/ball.obj");
 	_lightBulb->VBOobject();
-	_loadRobot = new ModelReader("../models/square.obj");
+	_loadModel = new ModelReader("../models/square.obj");
 
 	_robot = new Robot();
-	_robot->setVertices(_loadRobot->GetVertices());
-	_robot->setNormals(_loadRobot->GetNormals());
+	_robot->setVertices(_loadModel->GetVertices());
+	_robot->setNormals(_loadModel->GetNormals());
 	_robot->VBOobject();
 
+	delete _loadModel;
 
 	glm::mat4 _lid = glm::mat4(1.0);
 
@@ -79,6 +80,7 @@ void GameScene::update(GLFWwindow * window, float t)
 		_robot->forward(0, -t * 5.0f);
 
 	}
+	_coin->collected(_robotLoc);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,6 +155,7 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 	_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 16.0f, 0.0f));	//translate matrix
 	_r1 = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix
 	_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(0.25f, .25f, .25f));	//scale matrix
+	//std::cout << _t1[3][0] << std::endl;
 	_model = _t1*_r1*_s1;
 
 	setMatrices(camera);
@@ -184,7 +187,7 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 		_prog.setUniform("Ks", _robot->getSpecular().x, _robot->getSpecular().y, _robot->getSpecular().z);	//Specular reflectancy
 		_robot->render();
 	}
-
+	_robotLoc = glm::vec3(_t1[3][0], _t1[3][1], _t1[3][2]);
 }
 
 
