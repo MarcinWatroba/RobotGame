@@ -165,8 +165,10 @@
   <ItemGroup>
     <ClCompile Include="drawable.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="glslprogram.cpp" />
     <ClCompile Include="gl_core_4_3.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ModelReader.cpp" />
     <ClCompile Include="QuatCamera.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -179,7 +181,9 @@
     <ClInclude Include="..\include\defines.h" />
     <ClInclude Include="..\include\drawable.h" />
     <ClInclude Include="..\include\GameScene.h" />
+    <ClInclude Include="..\include\glslprogram.h" />
     <ClInclude Include="..\include\gl_core_4_3.hpp" />
+    <ClInclude Include="..\include\ModelReader.h" />
     <ClInclude Include="..\include\QuatCamera.h" />
     <ClInclude Include="..\include\scene.h" />
     <ClInclude Include="..\include\stdafx.h" />

@@ -1,6 +1,8 @@
 #ifndef GAMESCENE_H
 #define GAMESCENE_H
 
+#include "ModelReader.h"
+
 using glm::mat4;
 
 class GameScene : public Scene
@@ -12,9 +14,9 @@ private:
 
 	vec3 _worldLight;
 
-	//ModelReader* _building;
-	//ModelReader* _lightBulb;
-	//ModelReader* _loadRobot;
+	ModelReader* _building;
+	ModelReader* _lightBulb;
+	ModelReader* _loadRobot;
 	//Robot* _robot;
 	float _xRotation;
 	mat4 _model; //Model matrix

@@ -36,11 +36,11 @@ void GameScene::initScene(QuatCamera camera)
 	////Create the plane to represent the ground
 	//plane = new VBOPlane(100.0, 100.0, 100, 100);
 	////controlTower2
-	//m_building = new ModelReader("models\\ball.obj");
-	//m_building->VBOobject();
-	//m_lightBulb = new ModelReader("models\\ball.obj");
-	//m_lightBulb->VBOobject();
-	//m_loadRobot = new ModelReader("models\\square.obj");
+	_building = new ModelReader("../models/ball.obj");
+	_building->VBOobject();
+	_lightBulb = new ModelReader("../models/ball.obj");
+	_lightBulb->VBOobject();
+	_loadRobot = new ModelReader("../models/square.obj");
 
 	//_robot = new Robot();
 	//_robot->setVertices(m_loadRobot->GetVertices());
@@ -144,7 +144,7 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 	_prog.setUniform("Kd", 0.9f, 0.5f, 0.3f);	//Diffuse reflectancy
 	_prog.setUniform("Ka", 0.09f, 0.05f, 0.03f);	//Ambient reflectancy
 	_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
-	//m_building->render();
+	_building->render();
 
 	_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 16.0f, 0.0f));	//translate matrix
 	_r1 = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix
@@ -157,7 +157,7 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 	_prog.setUniform("Kd", .0f, .0f, .0f);	//Diffuse reflectancy
 	_prog.setUniform("Ka", 1.0f, 1.0f, 1.0f);	//Ambient reflectancy
 	_prog.setUniform("Ks", .0f, .0f, .0f);	//Specular reflectancy
-	//m_lightBulb->render();
+	_lightBulb->render();
 
 	//rotate matrix
 	_r1 = glm::rotate(glm::mat4(1.0f), -_xRotation, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -225,8 +225,8 @@ void GameScene::compileAndLinkShader()
 {
 
 	try {
-		_prog.compileShader("Shaders/diffuse.vert");
-		_prog.compileShader("Shaders/diffuse.frag");
+		_prog.compileShader("../shaders/diffuse.vert");
+		_prog.compileShader("../shaders/diffuse.frag");
 		_prog.link();
 		_prog.validate();
 		_prog.use();

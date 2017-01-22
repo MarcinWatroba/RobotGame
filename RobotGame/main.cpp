@@ -65,8 +65,8 @@ void initializeGL() {
 	lastFrame = 0.0;
 
 	// Create the scene class and initialise it for the camera
-	//scene = new GameScene();
-	//scene->initScene(camera);
+	scene = new GameScene();
+	scene->initScene(camera);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -141,8 +141,8 @@ void mainLoop() {
 		lastFrame = (float)currentFrame;
 		//GLUtils::checkForOpenGLError(__FILE__,__LINE__);
 		update(deltaTime);
-		//scene->update(window, deltaTime);
-		//scene->render(window, camera);
+		scene->update(window, deltaTime);
+		scene->render(window, camera);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 		//glfwSetTime(0.0);
@@ -153,7 +153,7 @@ void mainLoop() {
 // resize
 /////////////////////////////////////////////////////////////////////////////////////////////
 void resizeGL(QuatCamera camera, int w, int h) {
-	//scene->resize(camera, w, h);
+	scene->resize(camera, w, h);
 }
 
 int _tmain(int argc, _TCHAR* argv[])
