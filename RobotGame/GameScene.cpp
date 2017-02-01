@@ -12,6 +12,7 @@ using glm::vec3;
 /////////////////////////////////////////////////////////////////////////////////////////////
 GameScene::GameScene()
 {
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,58 +36,68 @@ void GameScene::initScene(QuatCamera camera)
 	_robotMove = 0;
 	_xRotation = -1.570796326f;
 
-	////Create the plane to represent the ground
-	//plane = new VBOPlane(100.0, 100.0, 100, 100);
-	////controlTower2
 
-	//Bitmap bmp1 = Bitmap::bitmapFromFile("../textures/cleanmetal.png");
 	_loadModel = new ModelReader("../models/ball.obj");
-	_coins.push_back(new Collectible(20.0f, .3f, 0.0f));
-	_coins.push_back(new Collectible(-20.0f, .3f, 0.0f));
+	_coins.push_back(new Collectible(10.0f, .3f, 0.0f));
+	_coins.push_back(new Collectible(-10.0f, .3f, 0.0f));
 	_coins.push_back(new Collectible(0.0f, 0.3f, -10.0f));
+
+	Bitmap bmp1 = Bitmap::bitmapFromFile("../textures/gold.jpg");
+	texGold = new Texture(bmp1);
 	for (auto it = _coins.begin(); it != _coins.end(); it++)
 	{
 		(*it)->setVertices(_loadModel->GetVertices());
 		(*it)->setNormals(_loadModel->GetNormals());
-		//(*it)->setTextures(_loadModel->GetTextureCoordinates());
+		(*it)->setTextures(_loadModel->GetTextureCoordinates());
 		//(*it)->applyTexture(bmp1);
 		(*it)->VBOobject();
 	}
 
-	_staticModels.push_back(new ModelReader("../models/square.obj"));
-	_staticModels.push_back(new ModelReader("../models/ground.obj"));
+	_staticModels.push_back(new ModelReader("../models/square2.obj"));
 	_staticModels.push_back(new ModelReader("../models/table.obj"));
 	_staticModels.push_back(new ModelReader("../models/sofa.obj"));
+	_staticModels.push_back(new ModelReader("../models/chair.obj"));
 	//_objects.push_back(new StaticObject());
+	bmp1 = Bitmap::bitmapFromFile("../textures/squares.bmp");
+	bmp1.flipVertically();
+	texWall = new Texture(bmp1, gl::LINEAR, gl::CLAMP_TO_EDGE);
 	for (int i = 0; i < 4; i++)
 	{
 		_objects.push_back(new StaticObject());
 		_objects.at(i)->setVertices(_staticModels.at(i)->GetVertices());
 		_objects.at(i)->setNormals(_staticModels.at(i)->GetNormals());
+		_objects.at(i)->setTextures(_staticModels.at(i)->GetTextureCoordinates());
 		_objects.at(i)->VBOobject();
+	}
+	bmp1 = Bitmap::bitmapFromFile("../textures/wood.bmp");
+	texWood = new Texture(bmp1);
+	for (int i = 0; i < 4; i++)
+	{
+		_chairs.push_back(new StaticObject());
+		_chairs.at(i)->setVertices(_staticModels.at(3)->GetVertices());
+		_chairs.at(i)->setNormals(_staticModels.at(3)->GetNormals());
+		_chairs.at(i)->setTextures(_staticModels.at(3)->GetTextureCoordinates());
+		_chairs.at(i)->VBOobject();
 	}
 
 
-
-	//_loadModel = new ModelReader("../models/ground.obj");
-	//_objects.push_back(new StaticObject());
-	//_objects.back()->setVertices(_loadModel->GetVertices());
-	//_objects.back()->setNormals(_loadModel->GetNormals());
-
-	_objects.back()->VBOobject();
-
+	//_objects.back()->VBOobject();
+	bmp1 = Bitmap::bitmapFromFile("../textures/cleanmetal.png");
+	texMetal = new Texture(bmp1);
 	_loadModel = new ModelReader("../models/square.obj");
-	//Bitmap bmp2 = Bitmap::bitmapFromFile("../textures/cleanmetal.png");
 	_robot = new Robot();
 	_robot->setVertices(_loadModel->GetVertices());
 	_robot->setNormals(_loadModel->GetNormals());
-	//_robot->setTextures(_loadModel->GetTextureCoordinates());
-	//_robot->applyTexture(bmp2);
+	_robot->setTextures(_loadModel->GetTextureCoordinates());
+
 	_robot->VBOobject();
 
-	delete _loadModel;
 
-	glm::mat4 _lid = glm::mat4(1.0);
+
+	//gl::ActiveTexture(gl::TEXTURE0);
+	//gl::BindTexture(gl::TEXTURE_2D, tex2->object());
+	delete _loadModel;
+	//delete bmp1;
 
 	//teapot = new VBOTeapot(16, lid);
 
@@ -126,7 +137,7 @@ void GameScene::update(GLFWwindow * window, float t)
 void GameScene::setLightParams(QuatCamera camera)
 {
 
-	_worldLight = vec3(10.0f, 16.0f, 0.0f);
+	_worldLight = vec3(0.0f, 6.0f, 0.0f);
 
 	_prog.setUniform("La", 1.0f, 1.0f, 1.0f);	//ambient light intensity
 	_prog.setUniform("Lp", 1.0f, 1.0f, 1.0f);	//point light intensity
@@ -158,9 +169,10 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 		setMatrices(camera);
 
 		////////Set the Teapot material properties in the shader and render
-		_prog.setUniform("Kd", 1.0f, 1.0f, 0.0f);	//Diffuse reflectancy
-		_prog.setUniform("Ka", 0.1f, 0.1f, 0.0f);	//Ambient reflectancy
+		_prog.setUniform("Kd", 1.0f, 0.8f, 0.0f);	//Diffuse reflectancy
+		_prog.setUniform("Ka", 0.1f, 0.08f, 0.0f);	//Ambient reflectancy
 		_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
+		(*it)->applyTexture(texGold);
 		(*it)->render();
 	}
 
@@ -175,10 +187,24 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 		_prog.setUniform("Kd", _objects.at(i)->getDiffuse().x, _objects.at(i)->getDiffuse().y, _objects.at(i)->getDiffuse().z);	//Diffuse reflectancy
 		_prog.setUniform("Ka", _objects.at(i)->getAmbient().x, _objects.at(i)->getAmbient().y, _objects.at(i)->getAmbient().z);	//Ambient reflectancy
 		_prog.setUniform("Ks", _objects.at(i)->getSpecular().x, _objects.at(i)->getSpecular().y, _objects.at(i)->getSpecular().z);	//Specular reflectancy
-
+		_objects.at(i)->applyTexture(texWall);
 		_objects.at(i)->render();
 	}
+	for (int i = 0; i < 4; i++)
+	{
+		_model = _chairs.at(i)->transformChair(i);
+		_chairs.at(i)->setMaterialWood();
+		setMatrices(camera);
+
+		//////Set the Teapot material properties in the shader and render
+		_prog.setUniform("Kd", _chairs.at(i)->getDiffuse().x, _chairs.at(i)->getDiffuse().y, _chairs.at(i)->getDiffuse().z);	//Diffuse reflectancy
+		_prog.setUniform("Ka", _chairs.at(i)->getAmbient().x, _chairs.at(i)->getAmbient().y, _chairs.at(i)->getAmbient().z);	//Ambient reflectancy
+		_prog.setUniform("Ks", _chairs.at(i)->getSpecular().x, _chairs.at(i)->getSpecular().y, _chairs.at(i)->getSpecular().z);	//Specular reflectancy
+		_chairs.at(i)->applyTexture(texWood);
+		_chairs.at(i)->render();
+	}
 	//rotate matrix
+
 	_r1 = glm::rotate(glm::mat4(1.0f), -_xRotation, glm::vec3(0.0f, 1.0f, 0.0f));
 	for (int i = 0; i < 6; i++)
 	{
@@ -198,6 +224,7 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 		_prog.setUniform("Kd", _robot->getDiffuse().x, _robot->getDiffuse().y, _robot->getDiffuse().z);	//Diffuse reflectancy
 		_prog.setUniform("Ka", _robot->getAmbient().x, _robot->getAmbient().y, _robot->getAmbient().z);	//Ambient reflectancy
 		_prog.setUniform("Ks", _robot->getSpecular().x, _robot->getSpecular().y, _robot->getSpecular().z);	//Specular reflectancy
+		_robot->applyTexture(texMetal);
 		_robot->render();
 	}
 	_robotLoc = glm::vec3(_t1[3][0], _t1[3][1], _t1[3][2]);

@@ -18,7 +18,9 @@ private:
 public:
 	StaticObject();
 	glm::mat4 transform(unsigned int object);
+	glm::mat4 transformChair(unsigned int object);
 	void setMaterial(unsigned int object);
+	void setMaterialWood();
 	glm::mat4 getModel();
 	glm::vec3 getDiffuse();
 	glm::vec3 getAmbient();

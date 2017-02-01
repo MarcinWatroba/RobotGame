@@ -21,7 +21,12 @@ private:
 	Robot* _robot;
 	vector<Collectible*> _coins;
 	vector<StaticObject*> _objects;
-
+	vector<StaticObject*> _chairs;
+	Texture *texMetal;
+	Texture *texGold;
+	Texture *texWood;
+	Texture *texWall;
+	//Texture *tex2;
 
 	float _xRotation;
 	mat4 _model; //Model matrix

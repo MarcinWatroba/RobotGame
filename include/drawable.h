@@ -22,7 +22,7 @@ public:
 	void setNormals(vector<float>& normals);
 	void setTextures(vector<float>& textures);
 	void VBOobject();
-	void applyTexture(Bitmap bmp);
+	void applyTexture(Texture* tex);
 	GLuint getTexture();
 	void render() const;
 };
