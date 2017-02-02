@@ -20,16 +20,23 @@ private:
 	vector<ModelReader*> _staticModels;
 	Robot* _robot;
 	vector<Collectible*> _coins;
-	vector<StaticObject*> _objects;
+	vector<StaticObject*> _lightbulbs;
 	vector<StaticObject*> _rooms;
 	vector<StaticObject*> _sofas;
 	vector<StaticObject*> _chairs;
 	vector<StaticObject*> _tables;
+	vector<StaticObject*> _tvs;
+	vector<StaticObject*> _TVcabinets;
+	vector<StaticObject*> _wardrobes;
+	vector<StaticObject*> _doors;
+
 	Texture *texMetal;
 	Texture *texGold;
 	Texture *texLeather;
 	Texture *texWood;
 	Texture *texWall;
+	Texture *texWhite;
+	Texture *texWardrobeWood;
 	//Texture *tex2;
 
 	mat4 _model; //Model matrix
@@ -42,6 +49,7 @@ private:
 	glm::vec3 _xaxis;
 	float _xa;
 	float _za;
+	glm::vec3 camPos;
 
 
 	void setMatrices(QuatCamera camera); //Set the camera matrices
@@ -71,10 +79,12 @@ public:
 
 	void renderStaticObject(QuatCamera camera, vector<StaticObject*> objects, unsigned int objIt, Texture* texture);
 
-	void renderRobot(QuatCamera camera);
+	void renderRobot(QuatCamera);
 
 	void resize(QuatCamera camera, int, int); //Resize
 
+	glm::vec3 resetCamera();
+	glm::quat resetCameraOrient();
 };
 
 #endif //GAMESCENE_H

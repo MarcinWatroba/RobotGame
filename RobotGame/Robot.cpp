@@ -311,6 +311,7 @@ void Robot::updateView(unsigned int part)
 	//Get the matrix from the 'orientation' Quaternion
 	//This deals with the rotation part of the view matrix
 	_view = glm::mat4_cast(_orientation); // Rotation and Scale.
+
 	if (part == 1 || part == 4)
 	{
 		_limbRotation = glm::mat4_cast(q_limbRotation[0]);
@@ -368,5 +369,15 @@ glm::mat4 Robot::getTranslation()
 	return _translate;
 }
 
+glm::vec3 Robot::getZaxis()
+{
+	_camPosition = _bodyPosition + _zaxis * 5.0f;
+	return _camPosition;
+}
 
+glm::quat Robot::getOrientation()
+{
+	std::cout << "Robot: " << _orientation.x << " " << _orientation.y << std::endl;
+	return _orientation;
+}
 

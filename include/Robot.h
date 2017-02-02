@@ -47,6 +47,7 @@ private:
 	glm::vec3 _lLegPosition;
 	glm::vec3 _rLegPosition;
 
+	glm::vec3 _camPosition;
 
 	glm::quat _xRotation;
 	glm::quat _yRotation;
@@ -75,6 +76,8 @@ public:
 	glm::vec3 getAmbient();
 	glm::vec3 getSpecular();
 
+	glm::vec3 getZaxis();
+	glm::quat getOrientation();
 
 	glm::mat4 getTranslation();
 

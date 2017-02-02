@@ -13,14 +13,18 @@ Collectible::Collectible(float x, float y, float z)
 
 }
 
-void Collectible::collected(glm::vec3 robLoc)
+bool Collectible::collected(glm::vec3 robLoc)
 {
 	if (robLoc.x < _location.x + 1.f && robLoc.x > _location.x - 1.f)
 	{
 		if (robLoc.z < _location.z + 1.f && robLoc.z > _location.z - 1.f)
 		{
 			std::cout << "scored!" << std::endl;
-			delete this;
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 

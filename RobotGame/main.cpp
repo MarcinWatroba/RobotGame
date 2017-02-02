@@ -26,6 +26,7 @@ double lastCursorPositionX, lastCursorPositionY, cursorPositionX, cursorPosition
 float currentFrame;
 float deltaTime;
 float lastFrame;
+bool freeCamera;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 //Callback function for keypress use to toggle animate (not used at the moment)
@@ -37,7 +38,10 @@ static void key_callback(GLFWwindow* window, int key, int cancode, int action, i
 		if (scene)
 			scene->animate(!(scene->animating()));
 	if (key == 'R' && action == GLFW_RELEASE)
-		camera.reset();
+	{
+		freeCamera = false;
+		camera.resetPosition(scene->resetCameraOrient(), scene->resetCamera());
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,7 +49,8 @@ static void key_callback(GLFWwindow* window, int key, int cancode, int action, i
 /////////////////////////////////////////////////////////////////////////////////////////////
 void scroll_callback(GLFWwindow *window, double x, double y)
 {
-	camera.zoom((float)y*0.5f);
+	freeCamera = true;
+		camera.zoom((float)y*0.5f);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,44 +89,50 @@ void update(float t)
 	//Rotates camera right around the robot
 	if (glfwGetKey(window, GLFW_KEY_D))
 	{
-		camera.rotate(t * 5, 0.0f);
-
+		if (!freeCamera)
+		{
+			camera.rotate(t * 5, 0.0f);
+		}
 	}
 
 	//Rotates camera left around the robot
 	if (glfwGetKey(window, GLFW_KEY_A))
 	{
-		camera.rotate(-t * 5, 0.0f);
-
+		if (!freeCamera)
+		{
+			camera.rotate(-t * 5, 0.0f);
+		}
 	}
+
+	//moves camera forward
+	if (glfwGetKey(window, GLFW_KEY_W))
+	{
+		if (!freeCamera)
+		{
+			camera.zoom(-t * 5);
+		}
+	}
+
 	//Using a different way (i.e. instead of callback) to check for RIGHT mouse button
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT))
 	{
+		freeCamera = true;
 		camera.pan(deltaX*MOVE_VELOCITY, deltaY*MOVE_VELOCITY);
 
 	}
 	//To adjust Roll with MIDDLE mouse button
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE))
 	{
-
+		freeCamera = true;
 		camera.roll(deltaX*ROTATE_VELOCITY);
-
-	}
-
-	//moves camera forward
-	if (glfwGetKey(window, GLFW_KEY_W))
-	{
-
-		camera.zoom(-t * 5);
 
 	}
 
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT))
 	{
 		//Rotate the camera. The 0.001f is a velocity mofifier to make the speed sensible
-
-		camera.rotate(deltaX*ROTATE_VELOCITY, deltaY*ROTATE_VELOCITY);
-		std::cout << deltaX << std::endl;
+		freeCamera = true;
+		camera.freeRotate(deltaX*ROTATE_VELOCITY, deltaY*ROTATE_VELOCITY);
 	}
 
 	//Store the current cursor position

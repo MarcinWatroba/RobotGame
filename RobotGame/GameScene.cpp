@@ -34,11 +34,21 @@ void GameScene::initScene(QuatCamera camera)
 	_staticModels.push_back(new ModelReader("../models/table.obj"));
 	_staticModels.push_back(new ModelReader("../models/sofa.obj"));
 	_staticModels.push_back(new ModelReader("../models/chair.obj"));
+	_staticModels.push_back(new ModelReader("../models/TV3.obj"));
+	_staticModels.push_back(new ModelReader("../models/tvCabinet.obj"));
+	_staticModels.push_back(new ModelReader("../models/wardrobes.obj"));
+	_staticModels.push_back(new ModelReader("../models/door.obj"));
+	_staticModels.push_back(new ModelReader("../models/ball.obj"));
 
 	initStaticObjects(_rooms, 0, 0);
 	initStaticObjects(_tables, 0, 1);
-	initStaticObjects(_sofas, 0, 2);
+	initStaticObjects(_sofas, 2, 2);
 	initStaticObjects(_chairs, 3, 3);
+	initStaticObjects(_tvs, 0, 4);
+	initStaticObjects(_TVcabinets, 0, 5);
+	initStaticObjects(_wardrobes, 0, 6);
+	initStaticObjects(_doors, 0, 7);
+	initStaticObjects(_lightbulbs, 0, 8);
 
 	initCollectibles();
 
@@ -70,20 +80,27 @@ void GameScene::initTextures()
 	bmp1 = Bitmap::bitmapFromFile("../textures/cleanmetal.png");
 	bmp1.flipVertically();
 	texMetal = new Texture(bmp1);
+
+	bmp1 = Bitmap::bitmapFromFile("../textures/white.bmp");
+	bmp1.flipVertically();
+	texWhite = new Texture(bmp1);
+
+	bmp1 = Bitmap::bitmapFromFile("../textures/CoronaWardrobeSet.bmp");
+	bmp1.flipVertically();
+	texWardrobeWood = new Texture(bmp1);
 }
 
 void GameScene::initCollectibles()
 {
-	_loadModel = new ModelReader("../models/ball.obj");
-	_coins.push_back(new Collectible(10.0f, .3f, 0.0f));
-	_coins.push_back(new Collectible(-10.0f, .3f, 0.0f));
-	_coins.push_back(new Collectible(0.0f, 0.3f, -10.0f));
+	_coins.push_back(new Collectible(8.0f, .3f, 9.0f));
+	_coins.push_back(new Collectible(-7.0f, .3f, 7.0f));
+	_coins.push_back(new Collectible(3.0f, 0.3f, -9.0f));
 
 	for (auto it = _coins.begin(); it != _coins.end(); it++)
 	{
-		(*it)->setVertices(_loadModel->GetVertices());
-		(*it)->setNormals(_loadModel->GetNormals());
-		(*it)->setTextures(_loadModel->GetTextureCoordinates());
+		(*it)->setVertices(_staticModels.at(8)->GetVertices());
+		(*it)->setNormals(_staticModels.at(8)->GetNormals());
+		(*it)->setTextures(_staticModels.at(8)->GetTextureCoordinates());
 		(*it)->VBOobject();
 	}
 }
@@ -104,6 +121,11 @@ void GameScene::initStaticObjects(vector<StaticObject*> object, int objIt, int s
 	case 1: _tables = object; break;
 	case 2: _sofas = object; break;
 	case 3: _chairs = object; break;
+	case 4: _tvs = object; break;
+	case 5: _TVcabinets = object; break;
+	case 6: _wardrobes = object; break;
+	case 7: _doors = object; break;
+	case 8: _lightbulbs = object; break;
 	}
 
 }
@@ -139,9 +161,17 @@ void GameScene::update(GLFWwindow * window, float t)
 		_robot->forward(0, -t * 5.0f);
 
 	}
-	for (auto it = _coins.begin(); it != _coins.end(); it++)	//check if robot collected items
+	for (auto it = _coins.begin(); it != _coins.end();)	//check if robot collected items
 	{
-		(*it)->collected(_robotLoc);
+		if ((*it)->collected(_robotLoc) == true)
+		{
+			_coins.erase(it);
+			it = _coins.end();
+		}
+		else
+		{
+			it++;
+		}
 
 	}
 }
@@ -152,7 +182,7 @@ void GameScene::update(GLFWwindow * window, float t)
 void GameScene::setLightParams(QuatCamera camera)
 {
 
-	_worldLight = vec3(0.0f, 6.0f, 0.0f);
+	_worldLight = vec3(0.0f, 6.5f, 0.0f);
 
 	_prog.setUniform("La", 1.0f, 1.0f, 1.0f);	//ambient light intensity
 	_prog.setUniform("Lp", 1.0f, 1.0f, 1.0f);	//point light intensity
@@ -175,16 +205,38 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 	renderCollectible(camera);
 
 	_model = _rooms.at(0)->transform(0);
-	_rooms.at(0)->setMaterial(0);
+	_rooms.at(0)->setMaterialGlossyWhite();
 	renderStaticObject(camera, _rooms, 0, texWall);
 
 	_model = _tables.at(0)->transformTable(0);
 	_tables.at(0)->setMaterialWood();
 	renderStaticObject(camera, _tables, 0, texWood);
 
-	_model = _sofas.at(0)->transformSofa(0);
-	_sofas.at(0)->setMaterialLeather();
-	renderStaticObject(camera, _sofas, 0, texLeather);
+	for (int i = 0; i < 3; i++)
+	{
+		_model = _sofas.at(i)->transformSofa(i);
+		_sofas.at(i)->setMaterialLeather();
+		renderStaticObject(camera, _sofas, i, texLeather);
+	}
+	_model = _tvs.at(0)->transformTVs(0);
+	_tvs.at(0)->setMaterialBlackGlossy();
+	renderStaticObject(camera, _tvs, 0, texWhite);
+
+	_model = _TVcabinets.at(0)->transformTVs(1);
+	_TVcabinets.at(0)->setMaterialWood();
+	renderStaticObject(camera, _TVcabinets, 0, texWood);
+
+	_model = _wardrobes.at(0)->transformWardrobe(0);
+	_wardrobes.at(0)->setMaterialWood();
+	renderStaticObject(camera, _wardrobes, 0, texWardrobeWood);
+
+	_model = _doors.at(0)->transformDoor(0);
+	_doors.at(0)->setMaterialWood();
+	renderStaticObject(camera, _doors, 0, texWood);
+
+	_model = _lightbulbs.at(0)->transformLightbulb(0);
+	_lightbulbs.at(0)->setMaterialWhite();
+	renderStaticObject(camera, _lightbulbs, 0, texWhite);
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -194,7 +246,6 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 	}
 
 	renderRobot(camera);
-
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -300,6 +351,16 @@ void GameScene::resize(QuatCamera camera, int w, int h)
 
 }
 
+glm::vec3 GameScene::resetCamera()
+{
+	return _robot->getZaxis();
+}
+
+glm::quat GameScene::resetCameraOrient()
+{
+	return _robot->getOrientation();
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 // Compile and link the shader
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -318,3 +379,4 @@ void GameScene::compileAndLinkShader()
 		exit(EXIT_FAILURE);
 	}
 }
+

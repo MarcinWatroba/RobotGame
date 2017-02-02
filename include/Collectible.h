@@ -12,7 +12,7 @@ private:
 
 public:
 	Collectible(float x, float y, float z);
-	void collected(glm::vec3 robLoc);
+	bool collected(glm::vec3 robLoc);
 	glm::vec3 getLocation();
 
 

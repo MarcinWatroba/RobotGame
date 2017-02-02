@@ -146,6 +146,21 @@ const glm::vec3 WORLDZ = glm::vec3(0,0,1);
 		_position += _zaxis * 5.0f;
 	}
 
+	void QuatCamera::freeRotate(const float yaw, const float pitch)
+	{
+		xRotation = fromAxisAngle(WORLDX, pitch);
+		yRotation = fromAxisAngle(WORLDY, yaw);
+
+		//updating camera orientation, the order is: x rotation first, y rotation second
+		_orientation = xRotation * _orientation * yRotation;
+
+		//need to normalize
+		glm::normalize(_orientation);
+
+		//update the camera view
+		updateView();
+	}
+
 	
 /////////////////////////////////////////////////////////////////////////////////////////////
 // Pan the camera
@@ -179,7 +194,7 @@ const glm::vec3 WORLDZ = glm::vec3(0,0,1);
 	void QuatCamera::updateView()
 	{
 		//Construct the view matrix from orientation quaternion and position vector
-
+		
 		//First get the matrix from the 'orientation' Quaternion
 		//This deals with the rotation and scale part of the view matrix
 		_view = glm::mat4_cast(_orientation); // Rotation and Scale
@@ -242,12 +257,33 @@ const glm::vec3 WORLDZ = glm::vec3(0,0,1);
 		updateView();
 	}
 
+	void QuatCamera::setCamPosition(glm::vec3 position)
+	{
+
+		_camPosition = position;
+		//std::cout << _camPosition.x << " : " << _camPosition.z << std::endl;
+	}
+
+	void QuatCamera::resetPosition(glm::quat orientation, ::vec3 position)
+	{
+		std::cout << "Camera: " << _orientation.x << " " << _orientation.y << std::endl;
+		_orientation = orientation;
+		_orientation.y = -orientation.y;
+		std::cout << "Camera: " << _orientation.x << " " << _orientation.y << std::endl;
+		_position.x = -position.x;
+		_position.y = 2.0f;
+		_position.z = position.z;
+
+		std::cout << position.x << " : " << position.z << std::endl;
+		updateView();
+	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 // Return the camera View matrix
 /////////////////////////////////////////////////////////////////////////////////////////////
 	glm::mat4 QuatCamera::view() 
 	{
-	
+
 		this->updateView();
 		return _view;
 	}

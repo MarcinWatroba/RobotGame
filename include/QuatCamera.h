@@ -18,6 +18,7 @@ private:
 
 	//Camera position vector and Quaternoin to represent camera orientation
 	glm::vec3 _position;
+	glm::vec3 _camPosition;
 	glm::quat _orientation;
 
 	glm::quat xRotation;
@@ -49,6 +50,7 @@ public:
 
 
 	void rotate(const float yaw, const float pitch); //Rotate camera
+	void freeRotate(const float yaw, const float pitch); //Rotate camera
 	void pan(const float x, const float y);  //Pan camera
 	void roll(const float z); //Roll camera
 	void zoom(const float z); //Zoom camera
@@ -57,6 +59,10 @@ public:
 	void updateView();  //Update the camera
 
 	void reset(void); //Reset the camera
+
+	void setCamPosition(glm::vec3 position);
+
+	void resetPosition(glm::quat orientation, glm::vec3 position);
 
 	glm::mat4 view(); //Get the View matrix
 
