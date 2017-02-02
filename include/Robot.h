@@ -65,7 +65,7 @@ private:
 public:
 	Robot();
 
-	void scalePart(unsigned int part, glm::vec3 position, float rotation);
+	void scalePart(unsigned int part);
 	void setMaterial(unsigned int part);
 
 
@@ -76,7 +76,7 @@ public:
 	glm::vec3 getSpecular();
 
 
-	glm::mat4 getTranslationM();
+	glm::mat4 getTranslation();
 
 
 	void rotate(unsigned int part, const float yaw, const float pitch); //Rotate camera

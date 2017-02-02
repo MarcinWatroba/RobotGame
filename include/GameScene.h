@@ -21,14 +21,17 @@ private:
 	Robot* _robot;
 	vector<Collectible*> _coins;
 	vector<StaticObject*> _objects;
+	vector<StaticObject*> _rooms;
+	vector<StaticObject*> _sofas;
 	vector<StaticObject*> _chairs;
+	vector<StaticObject*> _tables;
 	Texture *texMetal;
 	Texture *texGold;
+	Texture *texLeather;
 	Texture *texWood;
 	Texture *texWall;
 	//Texture *tex2;
 
-	float _xRotation;
 	mat4 _model; //Model matrix
 
 	vec3 _robotLoc;
@@ -40,10 +43,6 @@ private:
 	float _xa;
 	float _za;
 
-	float _robotMove;
-	glm::vec3 _robotPosition;
-	glm::vec3 _robotPosition2;
-	glm::quat _robotOrientation;
 
 	void setMatrices(QuatCamera camera); //Set the camera matrices
 
@@ -56,9 +55,23 @@ public:
 
 	void initScene(QuatCamera camera); //Initialise the scene
 
+	void initTextures();
+
+	void initCollectibles();
+
+	void initStaticObjects(vector<StaticObject*> object, int objIt, int statIt);
+
+	void initRobot();
+
 	void update(GLFWwindow * window, float t); //Update the scene
 
 	void render(GLFWwindow * window, QuatCamera camera);	//Render the scene
+
+	void renderCollectible(QuatCamera camera);
+
+	void renderStaticObject(QuatCamera camera, vector<StaticObject*> objects, unsigned int objIt, Texture* texture);
+
+	void renderRobot(QuatCamera camera);
 
 	void resize(QuatCamera camera, int, int); //Resize
 

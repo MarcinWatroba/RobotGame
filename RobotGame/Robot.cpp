@@ -49,7 +49,7 @@ Robot::Robot()
 
 }
 
-void Robot::scalePart(unsigned int part, glm::vec3 position, float rotation)
+void Robot::scalePart(unsigned int part)
 {
 
 	switch (part)
@@ -363,7 +363,7 @@ glm::mat4 Robot::view(unsigned int i)
 }
 
 
-glm::mat4 Robot::getTranslationM()
+glm::mat4 Robot::getTranslation()
 {
 	return _translate;
 }

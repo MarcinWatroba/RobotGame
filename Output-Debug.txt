@@ -1,0 +1,71 @@
+﻿'RobotGame.exe' (Win32): Loaded 'C:\Users\Marcin\Documents\YEAR 3\Games Programming\Coursework\RobotGame\bin\x64\Debug\RobotGame.exe'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\ntdll.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\kernel32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\KernelBase.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\opengl32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\msvcrt.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\advapi32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\sechost.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\rpcrt4.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\gdi32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\user32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\lpk.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\usp10.dll'. Cannot find or open the PDB file.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\glu32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\ddraw.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\dciman32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\setupapi.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\cfgmgr32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\oleaut32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\ole32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\devobj.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\dwmapi.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\shell32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\shlwapi.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\msvcp140d.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\vcruntime140d.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\ucrtbased.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\api-ms-win-core-timezone-l1-1-0.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\api-ms-win-core-file-l2-1-0.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\api-ms-win-core-localization-l1-2-0.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\api-ms-win-core-synch-l1-2-0.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\api-ms-win-core-processthreads-l1-1-1.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\api-ms-win-core-file-l1-2-0.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\imm32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\msctf.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\uxtheme.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\winmm.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\dinput8.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\xinput1_3.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\hid.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\wintrust.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\crypt32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\msasn1.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\ntmarta.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\Wldap32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\atig6pxx.dll'. Cannot find or open the PDB file.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\atio6axx.dll'. Cannot find or open the PDB file.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\version.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\atiadlxx.dll'. Cannot find or open the PDB file.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\propsys.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\userenv.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\profapi.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\wtsapi32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\psapi.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\ws2_32.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\nsi.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\IPHLPAPI.DLL'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\winnsi.dll'. Symbols loaded.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\atig6txx.dll'. Cannot find or open the PDB file.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\aticfx64.dll'. Cannot find or open the PDB file.
+'RobotGame.exe' (Win32): Unloaded 'C:\Windows\System32\atig6txx.dll'
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\atig6txx.dll'. Cannot find or open the PDB file.
+'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\cryptbase.dll'. Symbols loaded.
+The thread 0x2624 has exited with code 0 (0x0).
+The thread 0x2b48 has exited with code 0 (0x0).
+The thread 0x2998 has exited with code 0 (0x0).
+'RobotGame.exe' (Win32): Unloaded 'C:\Windows\System32\xinput1_3.dll'
+'RobotGame.exe' (Win32): Unloaded 'C:\Windows\System32\dinput8.dll'
+'RobotGame.exe' (Win32): Unloaded 'C:\Windows\System32\hid.dll'
+The thread 0x1018 has exited with code 0 (0x0).
+The program '[12056] RobotGame.exe' has exited with code 0 (0x0).

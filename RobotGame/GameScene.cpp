@@ -20,8 +20,6 @@ GameScene::GameScene()
 /////////////////////////////////////////////////////////////////////////////////////////////
 void GameScene::initScene(QuatCamera camera)
 {
-
-
 	//|Compile and link the shader  
 	compileAndLinkShader();
 
@@ -30,101 +28,118 @@ void GameScene::initScene(QuatCamera camera)
 	//Set up the lighting
 	setLightParams(camera);
 
-	_robotOrientation = glm::quat(1.0, 0.0, 0.0, 0.0);
-	_robotPosition = glm::vec3(0.0f, 4.0f, 0.0f);
-	_robotPosition2 = glm::vec3(0.0f, 3.0f, 0.0f);
-	_robotMove = 0;
-	_xRotation = -1.570796326f;
-
-
-	_loadModel = new ModelReader("../models/ball.obj");
-	_coins.push_back(new Collectible(10.0f, .3f, 0.0f));
-	_coins.push_back(new Collectible(-10.0f, .3f, 0.0f));
-	_coins.push_back(new Collectible(0.0f, 0.3f, -10.0f));
-
-	Bitmap bmp1 = Bitmap::bitmapFromFile("../textures/gold.jpg");
-	texGold = new Texture(bmp1);
-	for (auto it = _coins.begin(); it != _coins.end(); it++)
-	{
-		(*it)->setVertices(_loadModel->GetVertices());
-		(*it)->setNormals(_loadModel->GetNormals());
-		(*it)->setTextures(_loadModel->GetTextureCoordinates());
-		//(*it)->applyTexture(bmp1);
-		(*it)->VBOobject();
-	}
+	initTextures();
 
 	_staticModels.push_back(new ModelReader("../models/square2.obj"));
 	_staticModels.push_back(new ModelReader("../models/table.obj"));
 	_staticModels.push_back(new ModelReader("../models/sofa.obj"));
 	_staticModels.push_back(new ModelReader("../models/chair.obj"));
-	//_objects.push_back(new StaticObject());
+
+	initStaticObjects(_rooms, 0, 0);
+	initStaticObjects(_tables, 0, 1);
+	initStaticObjects(_sofas, 0, 2);
+	initStaticObjects(_chairs, 3, 3);
+
+	initCollectibles();
+
+	initRobot();
+
+	delete _loadModel;
+	_staticModels.clear();
+
+}
+
+void GameScene::initTextures()
+{
+	Bitmap bmp1 = Bitmap::bitmapFromFile("../textures/gold.jpg");
+	bmp1.flipVertically();
+	texGold = new Texture(bmp1);
+
 	bmp1 = Bitmap::bitmapFromFile("../textures/squares.bmp");
 	bmp1.flipVertically();
-	texWall = new Texture(bmp1, gl::LINEAR, gl::CLAMP_TO_EDGE);
-	for (int i = 0; i < 4; i++)
-	{
-		_objects.push_back(new StaticObject());
-		_objects.at(i)->setVertices(_staticModels.at(i)->GetVertices());
-		_objects.at(i)->setNormals(_staticModels.at(i)->GetNormals());
-		_objects.at(i)->setTextures(_staticModels.at(i)->GetTextureCoordinates());
-		_objects.at(i)->VBOobject();
-	}
+	texWall = new Texture(bmp1);
+
+	bmp1 = Bitmap::bitmapFromFile("../textures/leather2.bmp");
+	bmp1.flipVertically();
+	texLeather = new Texture(bmp1);
+
 	bmp1 = Bitmap::bitmapFromFile("../textures/wood.bmp");
+	bmp1.flipVertically();
 	texWood = new Texture(bmp1);
-	for (int i = 0; i < 4; i++)
+
+	bmp1 = Bitmap::bitmapFromFile("../textures/cleanmetal.png");
+	bmp1.flipVertically();
+	texMetal = new Texture(bmp1);
+}
+
+void GameScene::initCollectibles()
+{
+	_loadModel = new ModelReader("../models/ball.obj");
+	_coins.push_back(new Collectible(10.0f, .3f, 0.0f));
+	_coins.push_back(new Collectible(-10.0f, .3f, 0.0f));
+	_coins.push_back(new Collectible(0.0f, 0.3f, -10.0f));
+
+	for (auto it = _coins.begin(); it != _coins.end(); it++)
 	{
-		_chairs.push_back(new StaticObject());
-		_chairs.at(i)->setVertices(_staticModels.at(3)->GetVertices());
-		_chairs.at(i)->setNormals(_staticModels.at(3)->GetNormals());
-		_chairs.at(i)->setTextures(_staticModels.at(3)->GetTextureCoordinates());
-		_chairs.at(i)->VBOobject();
+		(*it)->setVertices(_loadModel->GetVertices());
+		(*it)->setNormals(_loadModel->GetNormals());
+		(*it)->setTextures(_loadModel->GetTextureCoordinates());
+		(*it)->VBOobject();
+	}
+}
+
+void GameScene::initStaticObjects(vector<StaticObject*> object, int objIt, int statIt)
+{
+	for (int i = 0; i < (objIt + 1); i++)
+	{
+		object.push_back(new StaticObject());
+		object.at(i)->setVertices(_staticModels.at(statIt)->GetVertices());
+		object.at(i)->setNormals(_staticModels.at(statIt)->GetNormals());
+		object.at(i)->setTextures(_staticModels.at(statIt)->GetTextureCoordinates());
+		object.at(i)->VBOobject();
+	}
+	switch (statIt)
+	{
+	case 0: _rooms = object; break;
+	case 1: _tables = object; break;
+	case 2: _sofas = object; break;
+	case 3: _chairs = object; break;
 	}
 
+}
 
-	//_objects.back()->VBOobject();
-	bmp1 = Bitmap::bitmapFromFile("../textures/cleanmetal.png");
-	texMetal = new Texture(bmp1);
+void GameScene::initRobot()
+{
 	_loadModel = new ModelReader("../models/square.obj");
 	_robot = new Robot();
 	_robot->setVertices(_loadModel->GetVertices());
 	_robot->setNormals(_loadModel->GetNormals());
 	_robot->setTextures(_loadModel->GetTextureCoordinates());
-
 	_robot->VBOobject();
-
-
-
-	//gl::ActiveTexture(gl::TEXTURE0);
-	//gl::BindTexture(gl::TEXTURE_2D, tex2->object());
-	delete _loadModel;
-	//delete bmp1;
-
-	//teapot = new VBOTeapot(16, lid);
-
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-//Update not used at present
+//Update robot position and item collection
 /////////////////////////////////////////////////////////////////////////////////////////////
 void GameScene::update(GLFWwindow * window, float t)
 {
-	if (glfwGetKey(window, GLFW_KEY_D))
+	if (glfwGetKey(window, GLFW_KEY_D))	//turn right
 	{
 		_robot->rotate(0, -t * 5.f, 0.0f);
 
 	}
-	if (glfwGetKey(window, GLFW_KEY_A))
+	if (glfwGetKey(window, GLFW_KEY_A))	//turn left
 	{
 		_robot->rotate(0, t*5.f, 0.0f);
 
 	}
-	if (glfwGetKey(window, GLFW_KEY_W))
+	if (glfwGetKey(window, GLFW_KEY_W))	//go forward
 	{
 
 		_robot->forward(0, -t * 5.0f);
 
 	}
-	for (auto it = _coins.begin(); it != _coins.end(); it++)
+	for (auto it = _coins.begin(); it != _coins.end(); it++)	//check if robot collected items
 	{
 		(*it)->collected(_robotLoc);
 
@@ -157,77 +172,99 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 
 	//First deal with the plane to represent the ground
 
+	renderCollectible(camera);
 
-	for (auto it = _coins.begin(); it != _coins.end(); it++)
+	_model = _rooms.at(0)->transform(0);
+	_rooms.at(0)->setMaterial(0);
+	renderStaticObject(camera, _rooms, 0, texWall);
+
+	_model = _tables.at(0)->transformTable(0);
+	_tables.at(0)->setMaterialWood();
+	renderStaticObject(camera, _tables, 0, texWood);
+
+	_model = _sofas.at(0)->transformSofa(0);
+	_sofas.at(0)->setMaterialLeather();
+	renderStaticObject(camera, _sofas, 0, texLeather);
+
+	for (int i = 0; i < 4; i++)
+	{
+		_model = _chairs.at(i)->transformChair(i);
+		_chairs.at(i)->setMaterialWood();
+		renderStaticObject(camera, _chairs, i, texWood);
+	}
+
+	renderRobot(camera);
+
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+//Render collectible objects
+/////////////////////////////////////////////////////////////////////////////////////////////
+void GameScene::renderCollectible(QuatCamera camera)
+{	
+	for (auto it = _coins.begin(); it != _coins.end(); it++)	//for each collectible object
 	{
 
 		_t1 = glm::translate(glm::mat4(1.0f), (*it)->getLocation());	//translate matrix
 		_r1 = glm::rotate(glm::mat4(1.0f), 0.f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix
 		_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(0.3f, 0.3f, 0.3f));	//scale matrix
-		_model = _t1*_r1*_s1;
+		_model = _t1*_r1*_s1;	//get model matrix
 
-		setMatrices(camera);
+		setMatrices(camera);	// set matrices
 
 		////////Set the Teapot material properties in the shader and render
 		_prog.setUniform("Kd", 1.0f, 0.8f, 0.0f);	//Diffuse reflectancy
 		_prog.setUniform("Ka", 0.1f, 0.08f, 0.0f);	//Ambient reflectancy
 		_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
-		(*it)->applyTexture(texGold);
-		(*it)->render();
+		(*it)->applyTexture(texGold);	//apply gold texture to each collectible
+		(*it)->render();	//render collectible
 	}
+}
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+//Render static objects
+/////////////////////////////////////////////////////////////////////////////////////////////
+void GameScene::renderStaticObject(QuatCamera camera, vector<StaticObject*> objects, unsigned int objIt, Texture* texture)
+{
 
-	for (int i = 0; i < 4; i++)
-	{
-		_model = _objects.at(i)->transform(i);
-		_objects.at(i)->setMaterial(i);
-		setMatrices(camera);
-
+	setMatrices(camera);	//set matrices
 		//////Set the Teapot material properties in the shader and render
-		_prog.setUniform("Kd", _objects.at(i)->getDiffuse().x, _objects.at(i)->getDiffuse().y, _objects.at(i)->getDiffuse().z);	//Diffuse reflectancy
-		_prog.setUniform("Ka", _objects.at(i)->getAmbient().x, _objects.at(i)->getAmbient().y, _objects.at(i)->getAmbient().z);	//Ambient reflectancy
-		_prog.setUniform("Ks", _objects.at(i)->getSpecular().x, _objects.at(i)->getSpecular().y, _objects.at(i)->getSpecular().z);	//Specular reflectancy
-		_objects.at(i)->applyTexture(texWall);
-		_objects.at(i)->render();
-	}
-	for (int i = 0; i < 4; i++)
-	{
-		_model = _chairs.at(i)->transformChair(i);
-		_chairs.at(i)->setMaterialWood();
-		setMatrices(camera);
+	_prog.setUniform("Kd", objects.at(objIt)->getDiffuse().x, objects.at(objIt)->getDiffuse().y, objects.at(objIt)->getDiffuse().z);	//Diffuse reflectancy
+	_prog.setUniform("Ka", objects.at(objIt)->getAmbient().x, objects.at(objIt)->getAmbient().y, objects.at(objIt)->getAmbient().z);	//Ambient reflectancy
+	_prog.setUniform("Ks", objects.at(objIt)->getSpecular().x, objects.at(objIt)->getSpecular().y, objects.at(objIt)->getSpecular().z);	//Specular reflectancy
+	objects.at(objIt)->applyTexture(texture);	//apply corresponding textures for each object
+	objects.at(objIt)->render();	//render objects
 
-		//////Set the Teapot material properties in the shader and render
-		_prog.setUniform("Kd", _chairs.at(i)->getDiffuse().x, _chairs.at(i)->getDiffuse().y, _chairs.at(i)->getDiffuse().z);	//Diffuse reflectancy
-		_prog.setUniform("Ka", _chairs.at(i)->getAmbient().x, _chairs.at(i)->getAmbient().y, _chairs.at(i)->getAmbient().z);	//Ambient reflectancy
-		_prog.setUniform("Ks", _chairs.at(i)->getSpecular().x, _chairs.at(i)->getSpecular().y, _chairs.at(i)->getSpecular().z);	//Specular reflectancy
-		_chairs.at(i)->applyTexture(texWood);
-		_chairs.at(i)->render();
-	}
-	//rotate matrix
+}
 
-	_r1 = glm::rotate(glm::mat4(1.0f), -_xRotation, glm::vec3(0.0f, 1.0f, 0.0f));
-	for (int i = 0; i < 6; i++)
+/////////////////////////////////////////////////////////////////////////////////////////////
+//Render robot object
+/////////////////////////////////////////////////////////////////////////////////////////////
+void GameScene::renderRobot(QuatCamera camera)
+{
+
+	for (int i = 0; i < 6; i++)	//each body part
 	{
 
-		_robot->scalePart(i, _robotPosition, _xRotation);
-		_robot->setMaterial(i);
+		_robot->scalePart(i);	//scale each part
+		_robot->setMaterial(i);	//set material reflection for each part
 
-		_s1 = _robot->getScale();
-		_r1 = _robot->view(i);
-		_t1 = _robot->getTranslationM();
+		_s1 = _robot->getScale();	//scale matrix
+		_r1 = _robot->view(i);	//rotation matrix
+		_t1 = _robot->getTranslation();	//translation matrix
 
-		_model = _t1 * _r1 * _s1;
+		_model = _t1 * _r1 * _s1;	//get model matrix
 
-		setMatrices(camera);
+		setMatrices(camera);	//set matrices
 
 		//Set the collectible material properties in the shader and render
 		_prog.setUniform("Kd", _robot->getDiffuse().x, _robot->getDiffuse().y, _robot->getDiffuse().z);	//Diffuse reflectancy
 		_prog.setUniform("Ka", _robot->getAmbient().x, _robot->getAmbient().y, _robot->getAmbient().z);	//Ambient reflectancy
 		_prog.setUniform("Ks", _robot->getSpecular().x, _robot->getSpecular().y, _robot->getSpecular().z);	//Specular reflectancy
-		_robot->applyTexture(texMetal);
-		_robot->render();
+		_robot->applyTexture(texMetal);	//apply metal texture for robot
+		_robot->render();	//render robot
 	}
-	_robotLoc = glm::vec3(_t1[3][0], _t1[3][1], _t1[3][2]);
+	_robotLoc = glm::vec3(_t1[3][0], _t1[3][1], _t1[3][2]);	//get robot location for collectible items collision detection
 }
 
 
@@ -236,8 +273,6 @@ void GameScene::render(GLFWwindow * window, QuatCamera camera)
 /////////////////////////////////////////////////////////////////////////////////////////////
 void GameScene::setMatrices(QuatCamera camera)
 {
-	//model = t1*r1*s1;
-
 	mat4 _mv = camera.view() * _model;
 
 	_prog.setUniform("ModelViewMatrix", _mv);
