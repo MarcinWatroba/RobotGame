@@ -94,7 +94,7 @@ void GameScene::initCollectibles()
 {
 	_coins.push_back(new Collectible(8.0f, .3f, 9.0f));
 	_coins.push_back(new Collectible(-7.0f, .3f, 7.0f));
-	_coins.push_back(new Collectible(3.0f, 0.3f, -9.0f));
+	_coins.push_back(new Collectible(0.0f, 0.3f, -9.0f));
 
 	for (auto it = _coins.begin(); it != _coins.end(); it++)
 	{
@@ -196,7 +196,7 @@ void GameScene::setLightParams(QuatCamera camera)
 /////////////////////////////////////////////////////////////////////////////////////////////
 // Render the scene
 /////////////////////////////////////////////////////////////////////////////////////////////
-void GameScene::render(GLFWwindow * window, QuatCamera camera)
+void GameScene::render(QuatCamera camera)
 {
 	gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
 

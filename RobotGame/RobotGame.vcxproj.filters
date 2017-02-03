@@ -57,6 +57,9 @@
     <ClCompile Include="StaticObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MenuScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\stdafx.h">
@@ -107,12 +110,21 @@
     <ClInclude Include="..\include\StaticObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\MenuScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Shaders\fragmentShader.frag">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Shaders\vertexShader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\shaders\menuFragShader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\shaders\menuVertShader.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

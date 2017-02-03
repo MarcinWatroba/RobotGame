@@ -22,7 +22,7 @@ glm::mat4 StaticObject::transform(unsigned int object)
 
 glm::mat4 StaticObject::transformTable(unsigned int object)
 {
-	_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.5f, -7.0f));	//translate matrix
+	_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.5f, -5.0f));	//translate matrix
 	_r1 = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(1.0f, 0.0f, 0.0f));	//rotate matrix
 	_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.f, 1.0f));	//scale matrix
 
@@ -59,22 +59,22 @@ glm::mat4 StaticObject::transformChair(unsigned int object)
 	switch (object)
 	{
 	case 0:
-		_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.35f, -8.0f));	//translate matrix
+		_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.35f, -6.0f));	//translate matrix
 		_r1 = glm::rotate(glm::mat4(1.0f), -0.0f, glm::vec3(0.0f, 1.0f, 0.0f));	//rotate matrix
 		_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.f, 1.0f));	//scale matrix
 		break;
 	case 1:
-		_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.35f, -8.0f));	//translate matrix
+		_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.35f, -6.0f));	//translate matrix
 		_r1 = glm::rotate(glm::mat4(1.0f), -0.0f, glm::vec3(0.0f, 1.0f, 0.0f));	//rotate matrix
 		_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.f, 1.0f));	//scale matrix
 		break;
 	case 2:
-		_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.35f, -6.0f));	//translate matrix
+		_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.35f, -4.0f));	//translate matrix
 		_r1 = glm::rotate(glm::mat4(1.0f), 3.14f, glm::vec3(0.0f, 1.0f, 0.0f));	//rotate matrix
 		_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.f, 1.0f));	//scale matrix
 		break;
 	case 3:
-		_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.35f, -6.0f));	//translate matrix
+		_t1 = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.35f, -4.0f));	//translate matrix
 		_r1 = glm::rotate(glm::mat4(1.0f), 3.14f, glm::vec3(0.0f, 1.0f, 0.0f));	//rotate matrix
 		_s1 = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.f, 1.0f));	//scale matrix
 		break;

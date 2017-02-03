@@ -23,27 +23,8 @@ void Drawable::setTextures(vector<float>& textures)
 
 void Drawable::applyTexture(Texture* tex)
 {
-
-	//Bitmap _bmp = bmp;
-	////bmp.flipVertically();
-	//gl::ActiveTexture(gl::TEXTURE0);
-	//gl::GenTextures(1, &textureID);
-	//Set texture
 	gl::ActiveTexture(gl::TEXTURE0);
 	gl::BindTexture(gl::TEXTURE_2D, tex->object());
-	//gl::TexImage2D(gl::TEXTURE_2D,
-	//	0, gl::RGB,
-	//	bmp.width(), bmp.height(), 0,
-	//	gl::RGB, gl::UNSIGNED_BYTE,
-	//	bmp.pixelBuffer());
-
-	//gl::TexParameterf(gl::TEXTURE_2D, gl::TEXTURE_MAG_FILTER, gl::LINEAR);
-	//gl::TexParameterf(gl::TEXTURE_2D, gl::TEXTURE_MIN_FILTER, gl::LINEAR);
-	//gl::TexParameterf(gl::TEXTURE_2D, gl::TEXTURE_WRAP_S, gl::CLAMP_TO_EDGE);
-	//gl::TexParameterf(gl::TEXTURE_2D, gl::TEXTURE_WRAP_T, gl::CLAMP_TO_EDGE);
-	//gl::TexParameterf(gl::TEXTURE_2D, gl::TEXTURE_WRAP_R, gl::CLAMP_TO_EDGE);
-
-
 }
 
 GLuint Drawable::getTexture()
@@ -66,7 +47,6 @@ void Drawable::VBOobject()
 	gl::EnableVertexAttribArray(0);  // Vertex position
 
 	gl::BindBuffer(gl::ARRAY_BUFFER, handle[1]);
-	//gl::BufferData(gl::ARRAY_BUFFER, m_vertexNormalTriplets.size() * sizeof(float), m_vertexNormalTriplets.data(), gl::STATIC_DRAW);
 	gl::BufferData(gl::ARRAY_BUFFER, _normals.size() * sizeof(float), _normals.data(), gl::STATIC_DRAW);
 	gl::VertexAttribPointer((GLuint)1, 3, gl::FLOAT, FALSE, 0, ((GLubyte *)NULL + (0)));
 	gl::EnableVertexAttribArray(1);  // Vertex normal
@@ -81,6 +61,5 @@ void Drawable::VBOobject()
 void Drawable::render() const
 {
 	gl::BindVertexArray(_vaoHandle);
-	//gl::DrawElements(gl::TRIANGLES, m_faceVertexIndices.size(), gl::UNSIGNED_INT, ((GLubyte *)NULL + (0)));
 	gl::DrawArrays(gl::TRIANGLES, 0, _vertices.size() / 3);
 }

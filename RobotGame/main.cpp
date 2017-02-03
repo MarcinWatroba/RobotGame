@@ -4,6 +4,7 @@
 #include "stdafx.h"
 
 #include "scene.h"
+#include "MenuScene.h"
 #include "GameScene.h"
 #include "QuatCamera.h"
 
@@ -15,8 +16,8 @@
 
 //The GLFW Window
 GLFWwindow *window;
-
-Scene *scene;
+MenuScene *menuscene;
+GameScene *scene;
 
 //The camera
 QuatCamera camera;
@@ -27,6 +28,7 @@ float currentFrame;
 float deltaTime;
 float lastFrame;
 bool freeCamera;
+bool playing = false;
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 //Callback function for keypress use to toggle animate (not used at the moment)
@@ -34,13 +36,21 @@ bool freeCamera;
 /////////////////////////////////////////////////////////////////////////////////////////////
 static void key_callback(GLFWwindow* window, int key, int cancode, int action, int mods)
 {
-	if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE)
-		if (scene)
-			scene->animate(!(scene->animating()));
-	if (key == 'R' && action == GLFW_RELEASE)
+	if (playing)
 	{
-		freeCamera = false;
-		camera.resetPosition(scene->resetCameraOrient(), scene->resetCamera());
+		if (key == 'R' && action == GLFW_RELEASE)
+		{
+			freeCamera = false;
+			camera.resetPosition(scene->resetCameraOrient(), scene->resetCamera());
+		}
+	}
+	else
+	{
+		if (key == 'P' && action == GLFW_RELEASE)
+		{
+			scene->initScene(camera);
+			playing = true;
+		}
 	}
 }
 
@@ -49,8 +59,11 @@ static void key_callback(GLFWwindow* window, int key, int cancode, int action, i
 /////////////////////////////////////////////////////////////////////////////////////////////
 void scroll_callback(GLFWwindow *window, double x, double y)
 {
-	freeCamera = true;
+	if (playing)
+	{
+		freeCamera = true;
 		camera.zoom((float)y*0.5f);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,8 +83,13 @@ void initializeGL() {
 	lastFrame = 0.0;
 
 	// Create the scene class and initialise it for the camera
+	menuscene = new MenuScene();
 	scene = new GameScene();
-	scene->initScene(camera);
+
+	//scene->initScene(camera);
+	menuscene->initScene();
+
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -151,9 +169,16 @@ void mainLoop() {
 		deltaTime = (float)currentFrame - lastFrame;
 		lastFrame = (float)currentFrame;
 		//GLUtils::checkForOpenGLError(__FILE__,__LINE__);
-		update(deltaTime);
-		scene->update(window, deltaTime);
-		scene->render(window, camera);
+		if (playing)
+		{
+			update(deltaTime);
+			scene->update(window, deltaTime);
+			scene->render(camera);
+		}
+		else
+		{
+			menuscene->render();
+		}
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 		//glfwSetTime(0.0);
@@ -164,6 +189,7 @@ void mainLoop() {
 // resize
 /////////////////////////////////////////////////////////////////////////////////////////////
 void resizeGL(QuatCamera camera, int w, int h) {
+	menuscene->resize(w, h);
 	scene->resize(camera, w, h);
 }
 
@@ -222,6 +248,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	// Close window and terminate GLFW
 	glfwTerminate();
 
+	delete menuscene;
 	delete scene;
 
 	// Exit program

@@ -22,15 +22,15 @@ public:
     /*
       Draw scene.
       */
-    virtual void render(GLFWwindow * window, QuatCamera camera) = 0;
+    virtual void render(QuatCamera camera) = 0;
 
     /*
       Called when screen is resized.
       */
     virtual void resize(QuatCamera camera,int, int) = 0;
 
-	virtual glm::vec3 resetCamera() = 0;
-	virtual glm::quat resetCameraOrient() = 0;
+	//virtual glm::vec3 resetCamera() = 0;
+	//virtual glm::quat resetCameraOrient() = 0;
     
     void animate( bool value ) { m_animate = value; }
     bool animating() { return m_animate; }

@@ -73,7 +73,7 @@ public:
 
 	void update(GLFWwindow * window, float t); //Update the scene
 
-	void render(GLFWwindow * window, QuatCamera camera);	//Render the scene
+	void render(QuatCamera camera);	//Render the scene
 
 	void renderCollectible(QuatCamera camera);
 
