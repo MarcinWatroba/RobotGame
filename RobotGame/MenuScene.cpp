@@ -12,21 +12,25 @@ void MenuScene::initScene()
 	compileAndLinkShader();
 
 
-	_loadButton = new ModelReader("../models/square2.obj");
+	_loadButton = new ModelReader("../models/menuPlane.obj");
 	_button = new StaticObject();
 	_button->setVertices(_loadButton->GetVertices());
 	_button->setNormals(_loadButton->GetNormals());
 	_button->setTextures(_loadButton->GetTextureCoordinates());
 	_button->VBOobject();
 
-	Bitmap _bmp = Bitmap::bitmapFromFile("../textures/squares.bmp");
+	Bitmap _bmp = Bitmap::bitmapFromFile("../textures/menuRes.bmp");
 	_bmp.flipVertically();
 	_texButton = new Texture(_bmp);
 
 }
 
-void MenuScene::update(GLFWwindow * window, float t)
+void MenuScene::update()
 {
+	Bitmap _bmp = Bitmap::bitmapFromFile("../textures/menuLoad.bmp");
+	_bmp.flipVertically();
+	_texButton = new Texture(_bmp);
+	render();
 }
 
 void MenuScene::render()
@@ -35,8 +39,6 @@ void MenuScene::render()
 
 	_button->applyTexture(_texButton);	//apply metal texture for robot
 	_button->render();	//render robot
-
-
 
 }
 

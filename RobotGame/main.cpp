@@ -46,8 +46,11 @@ static void key_callback(GLFWwindow* window, int key, int cancode, int action, i
 	}
 	else
 	{
-		if (key == 'P' && action == GLFW_RELEASE)
+		if (key == 257 && action == GLFW_RELEASE)
 		{
+			menuscene->update();
+			glfwSwapBuffers(window);
+			glfwPollEvents();
 			scene->initScene(camera);
 			playing = true;
 		}

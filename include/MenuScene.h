@@ -27,7 +27,7 @@ public:
 
 	void initScene(); //Initialise the scene
 
-	void update(GLFWwindow * window, float t); //Update the scene
+	void update(); //Update the scene
 
 	void render();	//Render the scen
 
