@@ -10,16 +10,21 @@
 class GameScene : public Scene
 {
 private:
-	GLSLProgram _prog;
+	GLSLProgram _prog;	//used for shaders
 
 	int _width, _height;
+	unsigned int _score;
 
 	vec3 _worldLight;
 
-	ModelReader* _loadModel;
+	//3d model objects
 	vector<ModelReader*> _staticModels;
 	Robot* _robot;
+
+	//vector of collectibles
 	vector<Collectible*> _coins;
+
+	//vector of static objects
 	vector<StaticObject*> _lightbulbs;
 	vector<StaticObject*> _rooms;
 	vector<StaticObject*> _sofas;
@@ -30,6 +35,7 @@ private:
 	vector<StaticObject*> _wardrobes;
 	vector<StaticObject*> _doors;
 
+	//textures
 	Texture *texMetal;
 	Texture *texGold;
 	Texture *texLeather;
@@ -43,14 +49,9 @@ private:
 
 	vec3 _robotLoc;
 
-	glm::mat4 _t1;
-	glm::mat4 _r1;
-	glm::mat4 _s1;
-	glm::vec3 _xaxis;
-	float _xa;
-	float _za;
-	glm::vec3 camPos;
-
+	glm::mat4 _t1;	//translation matrix
+	glm::mat4 _r1;	//rotation matrix
+	glm::mat4 _s1;	//scale matrix
 
 	void setMatrices(QuatCamera camera); //Set the camera matrices
 
@@ -65,7 +66,7 @@ public:
 
 	void initTextures();
 
-	void initCollectibles();
+	void initCollectibles();	
 
 	void initStaticObjects(vector<StaticObject*> object, int objIt, int statIt);
 

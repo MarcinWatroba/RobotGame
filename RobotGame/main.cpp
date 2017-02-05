@@ -30,10 +30,8 @@ float lastFrame;
 bool freeCamera;
 bool playing = false;
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-//Callback function for keypress use to toggle animate (not used at the moment)
-// and to check for R to reset camera
-/////////////////////////////////////////////////////////////////////////////////////////////
+
+// key callback to check for R to reset camera and enter to start the game
 static void key_callback(GLFWwindow* window, int key, int cancode, int action, int mods)
 {
 	if (playing)
@@ -57,9 +55,8 @@ static void key_callback(GLFWwindow* window, int key, int cancode, int action, i
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+
 //Callback function when mouse wheel is scrolled
-/////////////////////////////////////////////////////////////////////////////////////////////
 void scroll_callback(GLFWwindow *window, double x, double y)
 {
 	if (playing)
@@ -69,9 +66,8 @@ void scroll_callback(GLFWwindow *window, double x, double y)
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-// Initialise 
-/////////////////////////////////////////////////////////////////////////////////////////////
+
+// Initialize 
 void initializeGL() {
 
 
@@ -89,20 +85,17 @@ void initializeGL() {
 	menuscene = new MenuScene();
 	scene = new GameScene();
 
-	//scene->initScene(camera);
 	menuscene->initScene();
 
 
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+
 // Update
-/////////////////////////////////////////////////////////////////////////////////////////////
 void update(float t)
 {
 	//Get the current cursor position
 	glfwGetCursorPos(window, &cursorPositionX, &cursorPositionY);
-	//currentFrame = (float)glfwGetTime();
 	//See how much the cursor has moved
 	float deltaX = (float)(lastCursorPositionX - cursorPositionX);
 	float deltaY = (float)(lastCursorPositionY - cursorPositionY);
@@ -163,15 +156,13 @@ void update(float t)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-// Main loop updates scene and renders until we quit
-/////////////////////////////////////////////////////////////////////////////////////////////
+
+// Main loop updates scenes and renders until user quits
 void mainLoop() {
 	while (!glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE)) {
 		currentFrame = (float)glfwGetTime();
 		deltaTime = (float)currentFrame - lastFrame;
 		lastFrame = (float)currentFrame;
-		//GLUtils::checkForOpenGLError(__FILE__,__LINE__);
 		if (playing)
 		{
 			update(deltaTime);
@@ -184,13 +175,11 @@ void mainLoop() {
 		}
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-		//glfwSetTime(0.0);
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+
 // resize
-/////////////////////////////////////////////////////////////////////////////////////////////
 void resizeGL(QuatCamera camera, int w, int h) {
 	menuscene->resize(w, h);
 	scene->resize(camera, w, h);
@@ -222,13 +211,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	//Key callback
 	glfwSetKeyCallback(window, key_callback);
 
-	//Mouse callback, not used at the moment
-	//glfwSetMouseButtonCallback(window,mouse_callback);
-
 	//Scroll callback
 	glfwSetScrollCallback(window, scroll_callback);//Set callback
 
-												   // Load the OpenGL functions.
+	// Load the OpenGL functions.
 	gl::exts::LoadTest didLoad = gl::sys::LoadFunctions();
 
 	if (!didLoad) {

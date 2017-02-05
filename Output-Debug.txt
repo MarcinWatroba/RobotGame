@@ -73,11 +73,11 @@
 'RobotGame.exe' (Win32): Unloaded 'C:\Windows\System32\atig6txx.dll'
 'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\atig6txx.dll'. Cannot find or open the PDB file.
 'RobotGame.exe' (Win32): Loaded 'C:\Windows\System32\cryptbase.dll'. Symbols loaded.
-The thread 0x2094 has exited with code 0 (0x0).
-The thread 0xfc4 has exited with code 0 (0x0).
-The thread 0x357c has exited with code 0 (0x0).
+The thread 0x3598 has exited with code 0 (0x0).
+The thread 0x4318 has exited with code 0 (0x0).
+The thread 0x2374 has exited with code 0 (0x0).
 'RobotGame.exe' (Win32): Unloaded 'C:\Windows\System32\xinput1_3.dll'
 'RobotGame.exe' (Win32): Unloaded 'C:\Windows\System32\dinput8.dll'
 'RobotGame.exe' (Win32): Unloaded 'C:\Windows\System32\hid.dll'
-The thread 0x4148 has exited with code 0 (0x0).
-The program '[9004] RobotGame.exe' has exited with code 0 (0x0).
+The thread 0x3c18 has exited with code 0 (0x0).
+The program '[12976] RobotGame.exe' has exited with code 0 (0x0).

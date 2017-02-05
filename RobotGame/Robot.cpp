@@ -134,14 +134,11 @@ glm::vec3 Robot::getSpecular()
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-//Rotate the camera
-//Orient according to required pitch and yaw
-/////////////////////////////////////////////////////////////////////////////////////////////
+//Rotate the robot
 void Robot::rotate(unsigned int part, float yaw, const float pitch)
 {
 
-
+	//make sure it is rotated at the origin of the robot
 	_lHandPosition -= _sceneAxis * .4f;
 	_rHandPosition += _sceneAxis * .4f;
 	_lLegPosition += _sceneAxis * .4f;
@@ -154,6 +151,7 @@ void Robot::rotate(unsigned int part, float yaw, const float pitch)
 
 	_yRotation = fromAxis(WORLDY, yaw);
 
+	//calculate robot orientation and rotation of different body parts
 	_orientation = _orientation * _yRotation;
 
 	for (int i = 0; i < 2 ; i++)
@@ -162,11 +160,7 @@ void Robot::rotate(unsigned int part, float yaw, const float pitch)
 		q_rotation[i] = q_rotation[i] * _yRotation;
 	}
 
-
-	//need to normalize
-	//glm::normalize(_orientation);
-
-	updateView(part);
+	updateRobot(part);
 
 	_lHandPosition += _sceneAxis * .4f;
 	_rHandPosition -= _sceneAxis * .4f;
@@ -182,13 +176,14 @@ void Robot::rotate(unsigned int part, float yaw, const float pitch)
 
 void Robot::forward(unsigned int part, const float z)
 {
+	//make sure that body parts are rotated and moved at the robot origin
 	_time = z;
 	_lHandPosition -= _sceneAxis * .4f;
 	_rHandPosition += _sceneAxis * .4f;
 	_lLegPosition += _sceneAxis * .4f;
 	_rLegPosition -= _sceneAxis * .4f;
 
-	
+	//limb angle variable makes sure limbs do not rotate over a certain angle and walking boolean tells program if limb should be animated and rotated forward or backward
 	if (_limbAngle >= 0.70f)
 	{
 		_walking = true;
@@ -207,22 +202,22 @@ void Robot::forward(unsigned int part, const float z)
 		_limbAngle += _time;
 	}
 
+	//animate limbs
 	q_rotation[1] = _xRotation2 * q_rotation[1];
 	q_limbRotation[1] = q_limbRotation[1] * _xRotation2;
 
 	q_rotation[0] = _xRotation * q_rotation[0];
 	q_limbRotation[0] = q_limbRotation[0] * _xRotation;
 
-
+	//move robot forward
 	_lHandPosition += _zaxis * z;
 	_rHandPosition += _zaxis * z;
 	_bodyPosition += _zaxis * z;
 	_headPosition += _zaxis * z;
 	_lLegPosition += _zaxis * z;
 	_rLegPosition += _zaxis * z;
-	//Now call updateView()
 
-	updateView(part);
+	updateRobot(part);
 
 	_lHandPosition += _sceneAxis * .4f;
 	_rHandPosition -= _sceneAxis * .4f;
@@ -235,7 +230,7 @@ void Robot::forward(unsigned int part, const float z)
 
 void Robot::animate(unsigned int part)
 {
-
+	//deals with the rotation of limbs, makes sure these are rotated in correct direction
 	if (part == 0 || part == 4)
 	{
 		if (_walking == true)
@@ -265,14 +260,14 @@ void Robot::animate(unsigned int part)
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-// Update the camera view
-/////////////////////////////////////////////////////////////////////////////////////////////
-void Robot::updateView(unsigned int part)
+
+// Update the robot position and orientation
+void Robot::updateRobot(unsigned int part)
 {
 
 	animate(part);
 
+	//set the location of each robot part
 	switch (part)
 	{
 	case 0: 	
@@ -284,7 +279,6 @@ void Robot::updateView(unsigned int part)
 		_translate[3][0] = -_rHandPosition.x;
 		_translate[3][1] = _rHandPosition.y;
 		_translate[3][2] = _rHandPosition.z;
-		//std::cout << _view[3][1] << std::endl;
 		break;
 	case 2:
 		_translate[3][0] = -_bodyPosition.x;
@@ -308,10 +302,11 @@ void Robot::updateView(unsigned int part)
 		_translate[3][2] = _rLegPosition.z;
 		break;
 	}
-	//Get the matrix from the 'orientation' Quaternion
-	//This deals with the rotation part of the view matrix
-	_view = glm::mat4_cast(_orientation); // Rotation and Scale.
 
+	//This deals with the body rotation of the robot
+	_bodyRotation = glm::mat4_cast(_orientation); 
+
+	//this deals with each limb rotation
 	if (part == 1 || part == 4)
 	{
 		_limbRotation = glm::mat4_cast(q_limbRotation[0]);
@@ -323,20 +318,21 @@ void Robot::updateView(unsigned int part)
 		_rotation = glm::mat4_cast(q_rotation[1]);
 	}
 
-										  //Extract the robot coordinate axes from this matrix
-	_xaxis = glm::vec3(_view[0][0], _view[1][0], _view[2][0]);
-	_yaxis = glm::vec3(_limbRotation[0][1], _view[1][1], _limbRotation[2][1]);
-	_zaxis = glm::vec3(_view[0][2], _view[1][2], _view[2][2]);
+	//Extract the robot coordinate axes from this matrix
+	_xaxis = glm::vec3(_bodyRotation[0][0], _bodyRotation[1][0], _bodyRotation[2][0]);
+	_yaxis = glm::vec3(_limbRotation[0][1], _bodyRotation[1][1], _limbRotation[2][1]);
+	_zaxis = glm::vec3(_bodyRotation[0][2], _bodyRotation[1][2], _bodyRotation[2][2]);
 
-	_sceneAxis = glm::vec3(_rotation[0][1], _view[1][1], _rotation[2][1]);
+	//extract the robot's z axis without the limb rotation affecting it
+	_sceneAxis = glm::vec3(_rotation[0][1], _bodyRotation[1][1], _rotation[2][1]);
 
 
 }
-
-glm::mat4 Robot::view(unsigned int i)
+//get rotation of each body part
+glm::mat4 Robot::getRotation(unsigned int i)
 {
 
-	this->updateView(i);
+	this->updateRobot(i);
 	switch (i)
 	{
 	case 0:
@@ -346,10 +342,10 @@ glm::mat4 Robot::view(unsigned int i)
 		return _limbRotation;
 		break;
 	case 2:
-		return _view;
+		return _bodyRotation;
 		break;
 	case 3:
-		return _view;
+		return _bodyRotation;
 		break;
 	case 4:
 		return _limbRotation;
@@ -358,7 +354,7 @@ glm::mat4 Robot::view(unsigned int i)
 		return _limbRotation;
 		break;
 	default:
-		return _view;
+		return _bodyRotation;
 		break;
 	}
 }
@@ -369,6 +365,7 @@ glm::mat4 Robot::getTranslation()
 	return _translate;
 }
 
+//used for resetting camera when R button is pressed
 glm::vec3 Robot::getZaxis()
 {
 	_camPosition = _bodyPosition + _zaxis * 5.0f;
@@ -377,7 +374,6 @@ glm::vec3 Robot::getZaxis()
 
 glm::quat Robot::getOrientation()
 {
-	std::cout << "Robot: " << _orientation.x << " " << _orientation.y << std::endl;
 	return _orientation;
 }
 

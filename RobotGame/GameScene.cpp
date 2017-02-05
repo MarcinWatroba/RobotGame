@@ -7,17 +7,15 @@ using std::endl;
 
 using glm::vec3;
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+
 // Default constructor
-/////////////////////////////////////////////////////////////////////////////////////////////
 GameScene::GameScene()
 {
 
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+
 //Initialise the scene
-/////////////////////////////////////////////////////////////////////////////////////////////
 void GameScene::initScene(QuatCamera camera)
 {
 	//|Compile and link the shader  
@@ -30,6 +28,7 @@ void GameScene::initScene(QuatCamera camera)
 
 	initTextures();
 
+	//get models for in game objects
 	_staticModels.push_back(new ModelReader("../models/square2.obj"));
 	_staticModels.push_back(new ModelReader("../models/table.obj"));
 	_staticModels.push_back(new ModelReader("../models/sofa.obj"));
@@ -39,7 +38,9 @@ void GameScene::initScene(QuatCamera camera)
 	_staticModels.push_back(new ModelReader("../models/wardrobes.obj"));
 	_staticModels.push_back(new ModelReader("../models/door.obj"));
 	_staticModels.push_back(new ModelReader("../models/ball.obj"));
+	_staticModels.push_back(new ModelReader("../models/square.obj"));
 
+	//initialize static objects
 	initStaticObjects(_rooms, 0, 0);
 	initStaticObjects(_tables, 0, 1);
 	initStaticObjects(_sofas, 2, 2);
@@ -50,20 +51,23 @@ void GameScene::initScene(QuatCamera camera)
 	initStaticObjects(_doors, 0, 7);
 	initStaticObjects(_lightbulbs, 0, 8);
 
+	//initialize collectible objects
 	initCollectibles();
 
+	//initialize robot
 	initRobot();
 
-	delete _loadModel;
+	_score = 1;
+
 	_staticModels.clear();
 
 }
 
 void GameScene::initTextures()
 {
-	Bitmap bmp1 = Bitmap::bitmapFromFile("../textures/gold.jpg");
-	bmp1.flipVertically();
-	texGold = new Texture(bmp1);
+	Bitmap bmp1 = Bitmap::bitmapFromFile("../textures/gold.jpg");	//load texture and convert to bitmap if needed
+	bmp1.flipVertically();	//texture needs to be flipped
+	texGold = new Texture(bmp1);	//create texture object with loaded bmp texture
 
 	bmp1 = Bitmap::bitmapFromFile("../textures/squares.bmp");
 	bmp1.flipVertically();
@@ -92,6 +96,7 @@ void GameScene::initTextures()
 
 void GameScene::initCollectibles()
 {
+	//create new collectible items
 	_coins.push_back(new Collectible(8.0f, .3f, 9.0f));
 	_coins.push_back(new Collectible(-7.0f, .3f, 7.0f));
 	_coins.push_back(new Collectible(0.0f, 0.3f, -9.0f));
@@ -132,17 +137,16 @@ void GameScene::initStaticObjects(vector<StaticObject*> object, int objIt, int s
 
 void GameScene::initRobot()
 {
-	_loadModel = new ModelReader("../models/square.obj");
+
 	_robot = new Robot();
-	_robot->setVertices(_loadModel->GetVertices());
-	_robot->setNormals(_loadModel->GetNormals());
-	_robot->setTextures(_loadModel->GetTextureCoordinates());
+	_robot->setVertices(_staticModels.at(9)->GetVertices());
+	_robot->setNormals(_staticModels.at(9)->GetNormals());
+	_robot->setTextures(_staticModels.at(9)->GetTextureCoordinates());
 	_robot->VBOobject();
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+
 //Update robot position and item collection
-/////////////////////////////////////////////////////////////////////////////////////////////
 void GameScene::update(GLFWwindow * window, float t)
 {
 	if (glfwGetKey(window, GLFW_KEY_D))	//turn right
@@ -167,6 +171,8 @@ void GameScene::update(GLFWwindow * window, float t)
 		{
 			_coins.erase(it);
 			it = _coins.end();
+			std::cout << "Collected " << _score << " out of 3." << std::endl;
+			_score++;
 		}
 		else
 		{
@@ -176,26 +182,26 @@ void GameScene::update(GLFWwindow * window, float t)
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+
 // Set up the lighting variables in the shader
-/////////////////////////////////////////////////////////////////////////////////////////////
 void GameScene::setLightParams(QuatCamera camera)
 {
-
+	//light position
 	_worldLight = vec3(0.0f, 6.5f, 0.0f);
-
+	
 	_prog.setUniform("La", 1.0f, 1.0f, 1.0f);	//ambient light intensity
 	_prog.setUniform("Lp", 1.0f, 1.0f, 1.0f);	//point light intensity
 
-	_prog.setUniform("LightPosition", _worldLight);
+	//attenuation values
+	_prog.setUniform("constantAtt", 1.0f);	
+	_prog.setUniform("linearAtt", 0.06f);
+	_prog.setUniform("quadraticAtt", 0.008f);
 
-	//  prog.setUniform("LightPosition", camera.view() * vec4(worldLight,1.0) );
-
+	_prog.setUniform("LightPosition", _worldLight);	
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+
 // Render the scene
-/////////////////////////////////////////////////////////////////////////////////////////////
 void GameScene::render(QuatCamera camera)
 {
 	gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
@@ -204,9 +210,10 @@ void GameScene::render(QuatCamera camera)
 
 	renderCollectible(camera);
 
-	_model = _rooms.at(0)->transform(0);
-	_rooms.at(0)->setMaterialGlossyWhite();
-	renderStaticObject(camera, _rooms, 0, texWall);
+	//render each object
+	_model = _rooms.at(0)->transform(0);	//transform object, value passed is the object id, each object can have different transformation
+	_rooms.at(0)->setMaterialGlossyWhite();	//set material of the object
+	renderStaticObject(camera, _rooms, 0, texWall);	//render the object, send camera as a parameter, send the model, id and texture
 
 	_model = _tables.at(0)->transformTable(0);
 	_tables.at(0)->setMaterialWood();
@@ -244,13 +251,13 @@ void GameScene::render(QuatCamera camera)
 		_chairs.at(i)->setMaterialWood();
 		renderStaticObject(camera, _chairs, i, texWood);
 	}
-
+	
 	renderRobot(camera);
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+
+
 //Render collectible objects
-/////////////////////////////////////////////////////////////////////////////////////////////
 void GameScene::renderCollectible(QuatCamera camera)
 {	
 	for (auto it = _coins.begin(); it != _coins.end(); it++)	//for each collectible object
@@ -263,7 +270,6 @@ void GameScene::renderCollectible(QuatCamera camera)
 
 		setMatrices(camera);	// set matrices
 
-		////////Set the Teapot material properties in the shader and render
 		_prog.setUniform("Kd", 1.0f, 0.8f, 0.0f);	//Diffuse reflectancy
 		_prog.setUniform("Ka", 0.1f, 0.08f, 0.0f);	//Ambient reflectancy
 		_prog.setUniform("Ks", 1.0f, 1.0f, 1.0f);	//Specular reflectancy
@@ -272,14 +278,12 @@ void GameScene::renderCollectible(QuatCamera camera)
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+
 //Render static objects
-/////////////////////////////////////////////////////////////////////////////////////////////
 void GameScene::renderStaticObject(QuatCamera camera, vector<StaticObject*> objects, unsigned int objIt, Texture* texture)
 {
 
 	setMatrices(camera);	//set matrices
-		//////Set the Teapot material properties in the shader and render
 	_prog.setUniform("Kd", objects.at(objIt)->getDiffuse().x, objects.at(objIt)->getDiffuse().y, objects.at(objIt)->getDiffuse().z);	//Diffuse reflectancy
 	_prog.setUniform("Ka", objects.at(objIt)->getAmbient().x, objects.at(objIt)->getAmbient().y, objects.at(objIt)->getAmbient().z);	//Ambient reflectancy
 	_prog.setUniform("Ks", objects.at(objIt)->getSpecular().x, objects.at(objIt)->getSpecular().y, objects.at(objIt)->getSpecular().z);	//Specular reflectancy
@@ -288,9 +292,8 @@ void GameScene::renderStaticObject(QuatCamera camera, vector<StaticObject*> obje
 
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+
 //Render robot object
-/////////////////////////////////////////////////////////////////////////////////////////////
 void GameScene::renderRobot(QuatCamera camera)
 {
 
@@ -301,7 +304,7 @@ void GameScene::renderRobot(QuatCamera camera)
 		_robot->setMaterial(i);	//set material reflection for each part
 
 		_s1 = _robot->getScale();	//scale matrix
-		_r1 = _robot->view(i);	//rotation matrix
+		_r1 = _robot->getRotation(i);	//rotation matrix
 		_t1 = _robot->getTranslation();	//translation matrix
 
 		_model = _t1 * _r1 * _s1;	//get model matrix
@@ -312,16 +315,15 @@ void GameScene::renderRobot(QuatCamera camera)
 		_prog.setUniform("Kd", _robot->getDiffuse().x, _robot->getDiffuse().y, _robot->getDiffuse().z);	//Diffuse reflectancy
 		_prog.setUniform("Ka", _robot->getAmbient().x, _robot->getAmbient().y, _robot->getAmbient().z);	//Ambient reflectancy
 		_prog.setUniform("Ks", _robot->getSpecular().x, _robot->getSpecular().y, _robot->getSpecular().z);	//Specular reflectancy
-		_robot->applyTexture(texMetal);	//apply metal texture for robot
+		_robot->applyTexture(texMetal);	//apply metal texture for the robot
 		_robot->render();	//render robot
 	}
 	_robotLoc = glm::vec3(_t1[3][0], _t1[3][1], _t1[3][2]);	//get robot location for collectible items collision detection
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+
 //Send the MVP matrices to the GPU
-/////////////////////////////////////////////////////////////////////////////////////////////
 void GameScene::setMatrices(QuatCamera camera)
 {
 	mat4 _mv = camera.view() * _model;
@@ -334,14 +336,12 @@ void GameScene::setMatrices(QuatCamera camera)
 	mat3 _normMat = glm::transpose(glm::inverse(mat3(_model)));
 
 	_prog.setUniform("M", _model);
-	//prog.setUniform("NormalMatrix", normMat);
 	_prog.setUniform("V", camera.view());
 	_prog.setUniform("P", camera.projection());
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+
 // resize the viewport
-/////////////////////////////////////////////////////////////////////////////////////////////
 void GameScene::resize(QuatCamera camera, int w, int h)
 {
 	gl::Viewport(0, 0, w, h);
@@ -361,9 +361,8 @@ glm::quat GameScene::resetCameraOrient()
 	return _robot->getOrientation();
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+
 // Compile and link the shader
-/////////////////////////////////////////////////////////////////////////////////////////////
 void GameScene::compileAndLinkShader()
 {
 

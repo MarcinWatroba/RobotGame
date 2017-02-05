@@ -77,9 +77,6 @@
     <ClInclude Include="..\include\QuatCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\gl_core_4_3.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

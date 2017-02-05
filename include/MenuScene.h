@@ -8,18 +8,13 @@
 class MenuScene
 {
 private:
-	GLSLProgram _prog;
+	GLSLProgram _prog;	//used for shaders
 
 	int _width, _height;
 
-	ModelReader* _loadButton;
-	StaticObject* _button;
-	Texture *_texButton;
-
-	GLuint vboHandles[3];
-	GLuint numOfIndices;
-	GLuint vaoHandle;
-
+	ModelReader* _menuModel;	//load menu plane
+	StaticObject* _menu;	//menu object
+	Texture *_menuTex;	//menu texture
 
 	void compileAndLinkShader(); //Compile and link the shader
 public:

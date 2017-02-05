@@ -199,7 +199,6 @@
     <ClInclude Include="..\include\ModelReader.h" />
     <ClInclude Include="..\include\QuatCamera.h" />
     <ClInclude Include="..\include\Robot.h" />
-    <ClInclude Include="..\include\scene.h" />
     <ClInclude Include="..\include\StaticObject.h" />
     <ClInclude Include="..\include\stb_image.h" />
     <ClInclude Include="..\include\stdafx.h" />

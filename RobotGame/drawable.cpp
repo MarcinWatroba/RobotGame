@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "drawable.h"
 
+//This class populated VBO with data and draws the objects
 Drawable::Drawable()
 {
 }

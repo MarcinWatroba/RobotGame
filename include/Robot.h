@@ -9,25 +9,18 @@ private:
 
 	int _width, _height;
 
-	float _time;
+	float _time;	//delta time used for animation
 
 	glm::mat4 _s1;
-	mat4 _model;
-	mat4 _model2;
 
 	glm::vec3 _diffuse;
 	glm::vec3 _ambient;
 	glm::vec3 _specular;
 
 
-	float _limbAngle;
+	float _limbAngle;	//angle of limb rotation
 
-	bool _walking;
-
-	//vector<float> _vertices;	
-	//vector<float> _normals;
-
-	//unsigned int _vaoHandle;
+	bool _walking;	//boolean checks if limbs should rotate forward or backward
 
 	glm::vec3 _xaxis;
 	glm::vec3 _yaxis;
@@ -36,8 +29,8 @@ private:
 	//Camera position vector and Quaternoin to represent camera orientation
 	glm::vec3 _position;
 	glm::quat _orientation;
-	glm::quat q_rotation[2];
-	glm::quat q_limbRotation[2];
+	glm::quat q_rotation[2];	//quaternion for rotation of the robot
+	glm::quat q_limbRotation[2]; //quaternion for rotation of legs and arms
 
 
 	glm::vec3 _lHandPosition;
@@ -47,25 +40,27 @@ private:
 	glm::vec3 _lLegPosition;
 	glm::vec3 _rLegPosition;
 
+	//used to position camera behind robot
 	glm::vec3 _camPosition;
 
+	// quaternions used for body rotation on each axis
 	glm::quat _xRotation;
 	glm::quat _yRotation;
 	glm::quat _zRotation;
 	
+	//quaternion used for limb rotation
 	glm::quat _xRotation2;
 
 
-	glm::mat4 _view;
-	glm::mat4 _projection;
+	glm::mat4 _bodyRotation;
 	glm::mat4 _translate;
-	glm::quat _translateQuat;
 	glm::mat4 _rotation;
 	glm::mat4 _limbRotation;
 
 public:
 	Robot();
 
+	//scale and set material for each part of a robot
 	void scalePart(unsigned int part);
 	void setMaterial(unsigned int part);
 
@@ -76,25 +71,21 @@ public:
 	glm::vec3 getAmbient();
 	glm::vec3 getSpecular();
 
+	//needed for resetting camera and orientation of camera to behind the robot
 	glm::vec3 getZaxis();
 	glm::quat getOrientation();
 
-	glm::mat4 getTranslation();
-
+	glm::mat4 getTranslation();	//used for moving robot
+	glm::mat4 getRotation(unsigned int i); //get robot body and limb rotation
 
 	void rotate(unsigned int part, const float yaw, const float pitch); //Rotate camera
-	void animate(unsigned int part);
-	void forward(unsigned int part, const float z);
+	void animate(unsigned int part);	//animate robot limbs
+	void forward(unsigned int part, const float z);	//used for moving robot forward
 
 
-	void updateView(unsigned int part);  //Update the camera
-	glm::mat4 view(unsigned int i);
+	void updateRobot(unsigned int part);  //Update the camera
 
-	//void setVertices(vector<float>& vertices);
-	//void setNormals(vector<float>& normals);
-	//void VBOobject();
-	//void render() const;
-	//vector<float>& setTextureCoordinates();
+
 };
 
 #endif

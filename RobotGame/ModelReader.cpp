@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "ModelReader.h"
 
-//#include <glm/gtc/matrix_transform.hpp>
-
 ModelReader::ModelReader(string filename)
 {
 	ReadModelObjData(filename);
@@ -95,7 +93,6 @@ void ModelReader::ProcessVertexNormalLine(istringstream& iss)
 	while (iss >> value)
 	{	
 		_vertexNormals.push_back(value);
-		//std::cout << m_vertexNormals.back() << std::endl;
 	}
 }
 
@@ -187,8 +184,6 @@ void ModelReader::CreateExpandedNormals()
 		for (int i = 0; i < 3; i++)
 		{
 			_vertexNormalTriplets.push_back(_vertexNormals.at(vertexNormalNumber + i));
-			//std::cout << m_vertexNormalTriplets.back() << std::endl;
-
 		}
 		//index and copy 3 floats to the m_vertexTriplets vector
 
@@ -213,7 +208,7 @@ void ModelReader::CreateExpandedTextureCoordinates()
 }
 
 
-// Get methods gove access to the vector data
+// return model data
 
 vector<float>& ModelReader::GetVertices()
 {

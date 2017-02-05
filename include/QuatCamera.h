@@ -60,7 +60,7 @@ public:
 
 	void reset(void); //Reset the camera
 
-	void setCamPosition(glm::vec3 position);
+	void setCamPosition(glm::vec3 position);	//used for resetting camera position to robot
 
 	void resetPosition(glm::quat orientation, glm::vec3 position);
 

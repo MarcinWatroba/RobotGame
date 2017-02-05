@@ -7,16 +7,20 @@
 class StaticObject : public Drawable
 {
 private:
+	//transformation matrices
 	glm::mat4 _t1;
 	glm::mat4 _r1;
 	glm::mat4 _s1;
-	glm::mat4 _model;
+	glm::mat4 _model;	//model matrix
 
+	//material reflections
 	glm::vec3 _diffuse;
 	glm::vec3 _ambient;
 	glm::vec3 _specular;
 public:
 	StaticObject();
+
+	//functions transforming each object
 	glm::mat4 transform(unsigned int object);
 	glm::mat4 transformSofa(unsigned int object);
 	glm::mat4 transformChair(unsigned int object);
@@ -26,6 +30,7 @@ public:
 	glm::mat4 transformDoor(unsigned int object);
 	glm::mat4 transformLightbulb(unsigned int object);
 
+	//set each static object materials
 	void setMaterialGlossyWhite();
 	void setMaterialWhite();
 	void setMaterialLeather();

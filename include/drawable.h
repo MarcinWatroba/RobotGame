@@ -5,7 +5,7 @@
 #include "texture.h"
 using namespace std;
 
-class Drawable
+class Drawable	//class used by each drawable object
 {
 private:
 
