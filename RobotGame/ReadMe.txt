@@ -1,4 +1,3 @@
-# Robot Game
 
 A simple 3D game developed for my university assignment.
 
