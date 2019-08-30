@@ -14,7 +14,7 @@ class ModelReader : public Drawable
 		// need to know ascii for forward slash
 		static const int forwardSlash = 0x2F;
 
-		// this is the data read from the OBJ file....
+		// this is the data read from the OBJ file
 		vector<float> _vertices;					// v
 		vector<float> _vertexNormals;				// vn
 		vector<float> _vertexTextureCoordinates;	// vt only U V
